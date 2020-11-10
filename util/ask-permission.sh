@@ -17,15 +17,22 @@
 # along with this program (LICENSE).
 # If not, see <http://www.gnu.org/licenses/>.
 
-get_sys() {
-  # Determine System Type
-  unameOut="$(uname -s)"
-  case "${unameOut}" in
-      Linux*)   machine=LINUX;;
-      Darwin*)  machine=MAC;;
-      CYGWIN*)  machine=CYGWIN;;
-      MINGW*)   machine=MINGW;;
-      *)        machine=UNKNOWN;;
-  esac
-  SYS_TYPE=${machine}
+# Function will ask for Y/N input and return t/f
+ask_permission() {
+  echo "Do you give permission?: <y/n>"
+  while true; do
+    read yn
+    case $yn in
+      # User has entered: Yes
+      [Yy]*)  echo true
+              break;;
+
+      # User has entered: No
+      [Nn]*)  echo false
+              break;;
+
+      *)      echo "Please answer yes or no: <y/n>";;
+
+    esac
+  done
 }

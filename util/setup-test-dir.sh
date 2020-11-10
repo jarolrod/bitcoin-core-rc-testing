@@ -17,15 +17,22 @@
 # along with this program (LICENSE).
 # If not, see <http://www.gnu.org/licenses/>.
 
-get_sys() {
-  # Determine System Type
-  unameOut="$(uname -s)"
-  case "${unameOut}" in
-      Linux*)   machine=LINUX;;
-      Darwin*)  machine=MAC;;
-      CYGWIN*)  machine=CYGWIN;;
-      MINGW*)   machine=MINGW;;
-      *)        machine=UNKNOWN;;
-  esac
-  SYS_TYPE=${machine}
+setup_test_dir() {
+  # We will be making a regtest directory
+  # Ask permission
+  echo "Script needs to create regtest directory"
+  answer=$(ask_permission)
+  if answer=true; then
+      # Check that there is not one already existing
+      echo "${SCRIPT_DIR}/regtest"
+    #if [ ! -d "${SCRIPT_DIR}/regtest"]; then
+      mkdir ./regtest
+
+      # This is where we will download bitcoin
+      $BITCOIN_DIR="$SCRIPT_DIR/regtest"
+  else
+    echo "error"
+    #fi
+    #  echo "error"
+  fi
 }

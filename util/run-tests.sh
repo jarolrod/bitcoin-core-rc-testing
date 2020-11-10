@@ -17,15 +17,9 @@
 # along with this program (LICENSE).
 # If not, see <http://www.gnu.org/licenses/>.
 
-get_sys() {
-  # Determine System Type
-  unameOut="$(uname -s)"
-  case "${unameOut}" in
-      Linux*)   machine=LINUX;;
-      Darwin*)  machine=MAC;;
-      CYGWIN*)  machine=CYGWIN;;
-      MINGW*)   machine=MINGW;;
-      *)        machine=UNKNOWN;;
-  esac
-  SYS_TYPE=${machine}
+run_tests() {
+
+  for f in "${test_directory}"/rpc-*.sh; do
+    
+
 }
