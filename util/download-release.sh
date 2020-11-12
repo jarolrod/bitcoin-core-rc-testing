@@ -2,17 +2,26 @@
 
 download_release() {
   # Ask for permission to begin download
-  echo "Script needs to download the ${BITCOIN_VER} release"
-  echo "Do you give permission?"
+  echo "${BOLD}Script needs to download the ${BITCOIN_VER} Release"
+  echo "Do you give permission?${RESET}"
   select yn in "Yes" "No"; do
     case $yn in
-      Yes)  # We have permission
+      "Yes")  # We have permission
+            echo "${BOLD}Downloading the ${BITCOIN_VER} release for ${SYS_TYPE}\
+                  ${BLUE}"
+            case $SYS_TYPE in
+              LINUX)  curl --progress-bar $BITCOIN_LINUX -o $BITCOIN_ZIP
+                      break;;
 
-            curl $BITCOIN_MAC -o $BITCOIN_ZIP
-            break;;
-      No)   # Permission not given
-            echo "Error: No Bitcoin Release to work with"
-            echo "Please provide a Release directory, or give permission"
+              MAC)    curl --progress-bar $BITCOIN_MAC -o $BITCOIN_ZIP
+                      break;;
+            esac
+
+            ;;
+      "No")   # Permission not given
+            echo "${FAILURE}: No Bitcoin Release to work with"
+            echo "${RED}Please provide a Release directory, or give permission\
+                  ${RESET}"
             exit;;
     esac
   done

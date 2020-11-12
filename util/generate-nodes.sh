@@ -5,7 +5,7 @@ generate_nodes() {
 x=0
 PORT=1111
 RPC_PORT=2222
-echo "Generating Nodes:"
+echo "${BOLD}Generating Nodes"
 
 while [ $x -lt $1 ]
 do
@@ -23,13 +23,13 @@ do
   -datadir=./${NODES[$x]} -rpcport=${RPC_PORT}")
 
   # run node
-  if ./bin/${BITCOIND[$x]}; then
+  if $(./bin/${BITCOIND[$x]}); then
     # Increment variables
     PORT=$((PORT + 1))
     RPC_PORT=$((RPC_PORT + 1))
     x=$((x + 1))
 
-    echo "Generated Node ${x} of ${1}"
+    echo "${SUCCESS} Generated Node [${x}/${1}]"
 
   # Error in running node
   else

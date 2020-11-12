@@ -6,7 +6,6 @@ BITCOIN_ZIP="bitcoin-0201.tar.gz"
 
 # Default Script Values
 COLLECT_DATA='false'                      # Default: Do not collect data
-DOWNLOAD_BITCOIN='true'                   # Default: Download Bitcoin
 NUM_NODES=3                               # Default: Generate three nodes
 SYS_TYPE=""                               # Default: Unknown system type
 
@@ -22,15 +21,27 @@ BITCOIND=()                               # bitcoind nodes
 BITCOINCLI=()                             # bitcoin-cli reference
 NODES=()                                  # collection of node names
 
+# Stylized Output
+RED=$(tput setaf 1)                       # Red text output color
+GREEN=$(tput setaf 2)                     # Green text output color
+BLUE=$(tput setaf 4)                      # Blue text output color
+RESET=$(tput sgr0)                        # Reset text output color
+BOLD=$(tput bold)                         # Bold string
+SUCCESS="${BOLD}${GREEN}Success:${RESET}" # Success format string
+FAILURE="${BOLD}${RED}Failure:${RESET}"   # Failure format string
+
 # Source Utilities
 source "${UTIL_DIR}/help.sh"              # Help messages
 source "${UTIL_DIR}/get-sys.sh"           # Determine system type
-source "${UTIL_DIR}/ask-permission.sh"    # Ask user for explicit permission
+source "${UTIL_DIR}/node-warmup.sh"       # Node Warmup Time
 source "${UTIL_DIR}/download-release.sh"  # Download Bitcoin 0.20.1 release
-source "${UTIL_DIR}/progress-bar.sh"
 source "${UTIL_DIR}/unpack-release.sh"    # Unarchive Bitcoin Release
 source "${UTIL_DIR}/generate-nodes.sh"    # Generate bitcoind nodes
 source "${UTIL_DIR}/run-rpc.sh"           # run an rpc command
+source "${UTIL_DIR}/run-tests.sh"         # run all rpc tests
+
+# Source Tests
+
 
 # Parse option flags and args
 while getopts 'ch' option; do
@@ -60,11 +71,19 @@ unpack_release
 cd ./bitcoin
 generate_nodes $NUM_NODES
 
-# Allow Bitcoin Nodes to warm up
+# Wait for RPC to warm up
+node_warmup
 
+# source tests
+source-tests
 
-# Beging Mining Function
+#run tests
+run_tests
 
+# Send data if enabled
+#if $COLLECT_DATA; then
+  #send_data
+#fi
 
-# Load and Run RPC command tests
-#run-tests
+# Clean Up
+#cleanup

@@ -1,9 +1,11 @@
 #!/bin/bash
 
 run_tests() {
-
-  for f in "${test_directory}"/rpc-*.sh; do
-
-
+ls
+  for f in ${TEST_DIR}/rpc-*.sh; do
+    if ! "$f"; then
+      echo "${FAILURE} Test could not run"
+    fi
+  done
 
 }
