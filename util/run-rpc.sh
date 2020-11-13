@@ -4,5 +4,5 @@
 run_rpc() {
   # Compose complete rpc command string
   rpc_string="${BITCOINCLI[$1]} $2"
-  ./bin/${rpc_string}
+  ./${rpc_string}
 }

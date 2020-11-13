@@ -7,6 +7,8 @@ PORT=1111
 RPC_PORT=2222
 echo "${BOLD}Generating Nodes"
 
+cd ${BTC_SRC}
+
 while [ $x -lt $1 ]
 do
   #echo "node$x"
@@ -23,7 +25,7 @@ do
   -datadir=./${NODES[$x]} -rpcport=${RPC_PORT}")
 
   # run node
-  if $(./bin/${BITCOIND[$x]}); then
+  if $(./${BITCOIND[$x]}); then
     # Increment variables
     PORT=$((PORT + 1))
     RPC_PORT=$((RPC_PORT + 1))
@@ -37,4 +39,7 @@ do
     exit
   fi
 done
+
+
+
 }

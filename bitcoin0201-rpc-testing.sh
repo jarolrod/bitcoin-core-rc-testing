@@ -9,7 +9,7 @@ BITCOIN_ZIP="bitcoin-0201.tar.gz"
 NUM_NODES=3                               # Default: Generate three nodes
 
 # Important Directories
-SCRIPT_DIR=$(dirname "$0")                # Script home directory
+SCRIPT_DIR=$PWD                           # Script home directory
 UTIL_DIR="$SCRIPT_DIR/util"               # Util scripts
 TEST_DIR="$SCRIPT_DIR/tests"              # Test RPC Commands Scripts
 REGTEST_DIR="$SCRIPT_DIR/regtest"         # Regtest Directory
@@ -24,14 +24,16 @@ NODES=()                                  # collection of node names
 source "${UTIL_DIR}/help.sh"              # Help messages
 source "${UTIL_DIR}/get-sys.sh"           # Determine system type
 source "${UTIL_DIR}/configure.sh"         # Configure Script options
-source "${UTIL_DIR}/compile-btc.sh"         # Configure Script options
+source "${UTIL_DIR}/compile-btc.sh"       # Configure Script options
 source "${UTIL_DIR}/ask-permission.sh"    # Ask permission to perform task
 source "${UTIL_DIR}/node-warmup.sh"       # Node Warmup Time
 source "${UTIL_DIR}/download-btc.sh"      # Download Bitcoin
-source "${UTIL_DIR}/unpack-release.sh"    # Unarchive Bitcoin
+source "${UTIL_DIR}/unpack-btc.sh"        # Unarchive Bitcoin
 source "${UTIL_DIR}/generate-nodes.sh"    # Generate bitcoind nodes
 source "${UTIL_DIR}/run-rpc.sh"           # run an rpc command
+source "${UTIL_DIR}/source-tests.sh"      # source all in test directory
 source "${UTIL_DIR}/run-tests.sh"         # run all rpc tests
+source "${UTIL_DIR}/cleanup.sh"         # run all rpc tests
 
 # Parse option flags and args
 while getopts 'h' option; do
@@ -52,29 +54,29 @@ configure
 # Download Bitcoin
 # Function asks for permission
 # exit if permission not granted
-cd $REGTEST_DIR
-download_bitcoin
+download_btc
 
 # unarchive Bitcoin
-unpack_release
+unpack_btc
 
 # compile bitcoin if user downloaded source
-cd ./bitcoin
 if [ $COMPILE = 1 ]; then
   compile_btc
+  BTC_SRC="${BITCOIN_DIR}/src"
 fi
 
 # Generate nodes
-#generate_nodes $NUM_NODES
+generate_nodes $NUM_NODES
 
 # Wait for RPC to warm up
-#node_warmup
+node_warmup
 
 # source tests
-#source-tests
+cd $SCRIPT_DIR
+source_tests
 
 #run tests
-#run_tests
+run_tests
 
 # Send data if enabled
 #if $COLLECT_DATA; then
@@ -82,4 +84,4 @@ fi
 #fi
 
 # Clean Up
-#cleanup
+cleanup
