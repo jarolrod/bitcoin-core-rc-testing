@@ -1,3 +1,5 @@
+#!/bin/bash
+
 get_sys() {
   # Determine System Type
   unameOut="$(uname -s)"
