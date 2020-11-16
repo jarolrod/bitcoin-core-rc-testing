@@ -6,5 +6,5 @@ function compile_btc {
 
   ./autogen.sh
   ./configure
-  make -j5
+  make -j"$(($(nproc)+1))"
 }
