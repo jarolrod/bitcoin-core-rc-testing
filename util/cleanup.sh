@@ -10,11 +10,8 @@ cleanup () {
     ((index++))
   done
 
-  # delete everything in the Bitcoin directory
-  cd ${BITCOIN_DIR}
-  rm -rf *     # delete hidden files
-
-  if [ $COMPILE = 1 ]; then
-    rm -rf .*
-  fi
+  
+  rm "${REGTEST_DIR}/SHA256SUMS.asc"
+  # delete Bitcoin directory
+  rm -rf $BITCOIN_DIR
 }

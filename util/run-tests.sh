@@ -6,7 +6,7 @@ run_tests() {
   local func_name=''
   echo "${BOLD}Running tests:${RESET}"
 
-  cd $BTC_SRC
+  cd ${BTC_SRC}
 
   while [ $d -lt $NUM_TEST ]
   do

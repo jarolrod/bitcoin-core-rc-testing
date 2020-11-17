@@ -23,14 +23,12 @@ function configure {
           COMPILE=1                       # We will be compiling bitcoin
           TYPE="Source Code"              # Type of bitcoin download is source
           DOWNLOAD_LINK=$BITCOIN_SOURCE   # Download link is bitcoin source
-          BTC_SRC="/src"
           break
           ;;
 
       "$bit_rel") # User wants to download binary
           COMPILE=0           # We will not be compiling bitcoin
           TYPE="Release"      # Type of bitcoin download is release
-          BTC_SRC="${BITCOIN_DIR}/bin"
           # Download link is dependent on system type
           case $SYS_TYPE in
             LINUX)  DOWNLOAD_LINK=$BITCOIN_LINUX;;
