@@ -8,7 +8,8 @@ BITCOIN_ZIP="bitcoin-0201.tar.gz"
 
 # Default Values
 NUM_NODES=3                               # Default: Generate three nodes
-
+MINE=0                                    # Disable mining by default
+BLOCK_TIME=4                              # Default Block Time
 # Important Directories
 SCRIPT_DIR=$PWD                           # Script home directory
 UTIL_DIR="$SCRIPT_DIR/util"               # Util scripts
@@ -16,9 +17,12 @@ TEST_DIR="$SCRIPT_DIR/tests"              # Test RPC Commands Scripts
 REGTEST_DIR="$SCRIPT_DIR/regtest"         # Regtest Directory
 
 # Source Utilities
-for util in ${UTIL_DIR}/*;
+for dir in ${UTIL_DIR}/*;
 do
-  source $util;
+  for util in ${dir}/*;
+  do
+    source $util;
+  done
 done
 
 # Parse option flags and args
@@ -31,8 +35,8 @@ while getopts 'h' option; do
   esac
 done
 
-# Get system type
-get_sys
+# Get system info
+get_sys_info
 
 # Configure script options
 configure
@@ -56,10 +60,8 @@ node_warmup
 
 # source tests
 cd $SCRIPT_DIR
-source_tests
-
-#run tests
 run_tests
+
 
 # Send data if enabled
 #if $COLLECT_DATA; then

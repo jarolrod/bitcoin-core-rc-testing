@@ -1,16 +1,6 @@
 #!/bin/bash
 
 function configure {
-
-  # Stylized Output
-  RED=$(tput setaf 1)                       # Red text output color
-  GREEN=$(tput setaf 2)                     # Green text output color
-  BLUE=$(tput setaf 4)                      # Blue text output color
-  RESET=$(tput sgr0)                        # Reset text output color
-  BOLD=$(tput bold)                         # Bold string
-  SUCCESS="${BOLD}${GREEN}Success:${RESET}" # Success format string
-  FAILURE="${BOLD}${RED}Failure:${RESET}"   # Failure format string
-
   # Configure: Bitcoin Source, Bitcoin Release, Provide
   local bit_src="${GREEN}Source Code${RESET}${BOLD}"
   local bit_rel="${GREEN}Release${RESET}${BOLD}"
@@ -53,4 +43,7 @@ function configure {
                 break;;
     esac
   done
+
+  # log configuration info
+  write_config_info
 }

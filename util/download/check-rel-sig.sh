@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
+# Checks for signature integrity of Bitcoin files
 
 check_rel_sig() {
   # Download SHA256SUMS.asc

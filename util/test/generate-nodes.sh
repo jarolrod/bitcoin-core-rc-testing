@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
+# Generates bitcoind nodes
 
 generate_nodes() {
 # Node Variables
@@ -28,7 +33,7 @@ do
 
   # Generate a bitcoin-cli reference to the node
   BITCOINCLI+=("bitcoin-cli -regtest\
-  -datadir=./${NODES[$x]} -rpcport=${rpc_port}")
+  -datadir=${BTC_SRC}/${NODES[$x]} -rpcport=${rpc_port}")
 
   # run node
   if $(./${BITCOIND[$x]}); then

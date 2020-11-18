@@ -6,11 +6,11 @@ function compile_btc {
 
   ./autogen.sh
   ./configure
-# Mac
-if [ $SYS_TYPE = "MAC" ]; then 
-  make -j"$(($(sysctl -n hw.logicalcpu)+1))"
-# Linux
-else
-  make -j"$(($(nproc)+1))"
-fi
+  # Mac
+  if [ $SYS_TYPE = "MAC" ]; then
+    make -j"$(($(sysctl -n hw.logicalcpu)+1))"
+    # Linux
+  else
+    make -j"$(($(nproc)+1))"
+  fi
 }

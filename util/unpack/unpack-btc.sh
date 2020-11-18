@@ -22,9 +22,9 @@ unpack_btc() {
     # Found if not empty
     if [ ! -z "$BITCOIN_DIR" ]; then
       echo "${SUCCESS} Unpacked Bitcoin ${TYPE} Archive File"
-
     else
       echo "${FAILURE} Could not unpack Bitcoin ${TYPE} Archive File"
+      exit
     fi
 
     # No Bitcoin Archive File found in CWD -> should not happen
