@@ -15,6 +15,7 @@ SCRIPT_DIR=$PWD                           # Script home directory
 UTIL_DIR="$SCRIPT_DIR/util"               # Util scripts
 TEST_DIR="$SCRIPT_DIR/tests"              # Test RPC Commands Scripts
 REGTEST_DIR="$SCRIPT_DIR/regtest"         # Regtest Directory
+DATA_DIR="$REGTEST_DIR/data"              # Script data directory
 
 # Source Utilities
 for dir in ${UTIL_DIR}/*;
@@ -47,7 +48,7 @@ configure
 download_btc
 
 # unarchive Bitcoin
-# check for valid signatur before unpacking Release
+# check for valid signature before unpacking Release
 if (check_rel_sig); then
   unpack_btc
 fi
@@ -61,7 +62,6 @@ node_warmup
 # source tests
 cd $SCRIPT_DIR
 run_tests
-
 
 # Send data if enabled
 #if $COLLECT_DATA; then

@@ -11,11 +11,11 @@ write_test_info() {
     echo "
       \"$1\": {
         \"success\": 1
-      }" >> ${REGTEST_DIR}/data.json
+      }" >> ${DATA_FILE}
   else
     echo "
       \"$1\": {
         \"success\": 1
-      }," >> ${REGTEST_DIR}/data.json
+      }," >> ${DATA_FILE}
   fi
 }

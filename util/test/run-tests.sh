@@ -22,7 +22,7 @@ run_tests() {
 
   # log test start in data.json
   echo "
-  \"test_data\": { " >> ${REGTEST_DIR}/data.json
+  \"test_data\": { " >> ${DATA_FILE}
 
   local test_dir_num=$(ls ${TEST_DIR} | wc -l | xargs)
   local test_dir_index=1
@@ -32,7 +32,7 @@ run_tests() {
     TEST_TYPE="$(basename -- ${dir} | tr a-z A-Z)"
     echo "${BOLD}${TEST_TYPE} Tests${RESET}"
     # Log test type
-    echo "    \"${TEST_TYPE}\": {" >> ${REGTEST_DIR}/data.json
+    echo "    \"${TEST_TYPE}\": {" >> ${DATA_FILE}
     # of dirs
 
     dir_num_tests=$(ls ${dir} | wc -l | xargs)   # gets number of tests
@@ -58,16 +58,16 @@ run_tests() {
 
     if [ $test_dir_index -eq $test_dir_num ]; then
       # Close json object for this type of test without comma
-      echo "    }" >> ${REGTEST_DIR}/data.json
+      echo "    }" >> ${DATA_FILE}
     else
-      echo "    }," >> ${REGTEST_DIR}/data.json
+      echo "    }," >> ${DATA_FILE}
     fi
     ((test_dir_index++))
   done
 
   # close test_data json object
-  echo "  }" >> ${REGTEST_DIR}/data.json
+  echo "  }" >> ${DATA_FILE}
 
   # close data.json
-  echo "}" >> ${REGTEST_DIR}/data.json
+  echo "}" >> ${DATA_FILE}
 }

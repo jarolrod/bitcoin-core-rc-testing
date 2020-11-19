@@ -20,7 +20,7 @@ get_sys_info() {
     mac_sys_info
   else
     #linux_sys_info
-    echo ""
+    linux_sys_info
   fi
 
   # Write collected System Informatio

@@ -20,6 +20,6 @@ write_config_info() {
     \"download_link\": \"${DOWNLOAD_LINK}\",
     \"telemetry_optin\": ${TELEMETRY},
     \"compile\": ${COMPILE}
-  }," >> ${REGTEST_DIR}/data.json
+  }," >> ${DATA_FILE}
 
 }

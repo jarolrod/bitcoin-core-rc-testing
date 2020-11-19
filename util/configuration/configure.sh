@@ -44,6 +44,12 @@ function configure {
     esac
   done
 
+  local time_snapshot=$(date +%I:%M:%S)
+  DATA_FILE=${DATA_DIR}/"data-${time_snapshot}.json"
+
+  # Write collected System Informatio
+  write_sys_info
+  
   # log configuration info
   write_config_info
 }

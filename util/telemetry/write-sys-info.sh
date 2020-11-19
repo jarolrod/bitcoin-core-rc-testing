@@ -10,13 +10,11 @@ write_sys_info() {
   # 2. operating_system
   # 3. processor
   # 4. kernel
-  echo "" > ${REGTEST_DIR}/data.json
   echo "{
   \"system\": {
     \"system_type\": \"${SYS_TYPE}\",
     \"operating_system\": \"${OS}\",
     \"kernel\": \"${KERNEL}\",
     \"processor\": \"${PROCESSOR}\"
-  }," >> ${REGTEST_DIR}/data.json
-
+  }," >> ${DATA_FILE}
 }

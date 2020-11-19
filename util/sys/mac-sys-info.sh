@@ -5,7 +5,7 @@
 #
 # Collect System Information on a Mac machine
 
-mac_sys_info () {
+mac_sys_info() {
   local name=$(sw_vers -productName)
   local version=$(sw_vers -productVersion)
   local build=$(sw_vers -buildVersion)
