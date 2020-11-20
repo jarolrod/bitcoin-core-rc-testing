@@ -30,8 +30,10 @@ function configure {
   done
 
   # Configure: Telemetry Data
-  echo "Bitcoin Core Developers can benefit from your test data"
-  echo "Would you like to opt-in to sending Telemetry data?"
+  echo "Bitcoin Core Developers can benefit from your test data."
+  echo -n "Would you like to opt-in to privately send your test output?"
+  echo " (You will get a local copy regardless.)"
+  echo "You can learn more about how this data will be used at [Link TBD]"
   local yes="${GREEN}Yes${RESET}${BOLD}: Send my test data"
   local no="${RED}No${RESET}${BOLD}: Do not send my test data"
   select option in "$yes" "$no"
@@ -49,7 +51,7 @@ function configure {
 
   # Write collected System Informatio
   write_sys_info
-  
+
   # log configuration info
   write_config_info
 }
