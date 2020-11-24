@@ -1,12 +1,36 @@
-# Bitcoin0201-RPCTesting
-Automated Bitcoin Core 0.20.1 RPC Testing
+# Bitcoin Core Release Candidate Testing
 
-### Running
-1. Give permission to 'bitcoin0201-rpc-testing.sh'
-```
-$ chmod +x ./bitcoin0201-rpc-testing.sh
-```
+Automated tests and manual instructions to test release candidates for Bitcoin Core.
+
+It’s up to all of us to make sure that Bitcoin is the best it can be. It takes a lot of work to ensure that every release safely bridges us to the future. We need your eyes (and your computer) to make sure that 0.21 is as good as it can be. Come lend a hand!
+
+## Running Automated Tests (beginner)
+
+1. Give permission to 'bitcoin-core-testing.sh'
+
+`$ chmod +x ./bitcoin-core-testing.sh.sh`
+
 2. Execute
+
+`./bitcoin-core-testing.sh.sh`
+
+## Running manual tests (intermediate or expert)
+
+To compile:
 ```
-./bitcoin0201-rpc-testing.sh
+wget https://github.com/bitcoin/bitcoin/archive/v0.21.0rc1.zip
+unzip v0.21.0rc1.zip
+cd bitcoin-0.21.0rc1
 ```
+
+Here are some guides to compile Bitcoin Core from source for [OSX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md), and [UNIX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md).
+
+For those upgrading, [a draft of the 0.21 release notes](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft#how-to-upgrade) have instructions.
+
+Things to test:
+- [ ] [Tor](/tests/tor.md)
+- [ ] [Signet]()
+- [ ] [Anchor connections]()
+- [ ] [Wtxid]()
+- [ ] [Tx fetching logic]()
+- [ ] [The wallet](tests/wallet/README.md)
