@@ -10,6 +10,7 @@ write_sys_info() {
   # 2. operating_system
   # 3. processor
   # 4. kernel
+
   echo "{
   \"system\": {
     \"system_type\": \"${SYS_TYPE}\",
@@ -17,4 +18,6 @@ write_sys_info() {
     \"kernel\": \"${KERNEL}\",
     \"processor\": \"${PROCESSOR}\"
   }," >> ${DATA_FILE}
+
+  SYS_INFO_WRITE=1
 }

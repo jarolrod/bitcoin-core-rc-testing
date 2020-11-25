@@ -3,8 +3,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
-# Show help information
+# Remove SHA256SUMS.asc File
 
-help() {
-
+remove_shasums() {
+  rm "${REGTEST_DIR}/SHA256SUMS.asc" && echo "${SUCCESS} Removed SHA256SUMS.asc File"
 }

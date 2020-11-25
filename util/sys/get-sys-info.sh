@@ -16,12 +16,8 @@ get_sys_info() {
   SYS_TYPE=${machine}
 
   # Gather additional info: System Dependent
-  if [ $SYS_TYPE = "MAC" ]; then
-    mac_sys_info
-  else
-    #linux_sys_info
-    linux_sys_info
-  fi
+  [ $SYS_TYPE = "MAC" ] && mac_sys_info       # Mac System
+  [ $SYS_TYPE = "LINUX" ] && linux_sys_info   # Linux system
 
   # Write collected System Informatio
   write_sys_info

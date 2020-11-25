@@ -7,15 +7,18 @@
 
 write_test_info() {
 
-  if [ $TEST_INDEX -eq $NUM_TEST ]; then
-    echo "
-      \"$1\": {
-        \"success\": 1
-      }" >> ${DATA_FILE}
-  else
-    echo "
-      \"$1\": {
-        \"success\": 1
-      }," >> ${DATA_FILE}
-  fi
+  [ $TEST_INDEX -eq $NUM_TEST ] \
+    && {
+      echo "
+        \"$1\": {
+          \"success\": 1
+        }" >> ${DATA_FILE}
+    } \
+    || {
+      echo "
+        \"$1\": {
+          \"success\": 1
+        }," >> ${DATA_FILE}
+    }
+
 }

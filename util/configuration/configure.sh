@@ -1,6 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
+# Prompts user to choose script configuration options
 
-function configure {
+configure() {
   # Configure: Bitcoin Source, Bitcoin Release, Provide
   local bit_src="${GREEN}Source Code${RESET}${BOLD}"
   local bit_rel="${GREEN}Release${RESET}${BOLD}"
@@ -13,6 +18,7 @@ function configure {
           COMPILE=1                       # We will be compiling bitcoin
           TYPE="Source Code"              # Type of bitcoin download is source
           DOWNLOAD_LINK=$BITCOIN_SOURCE   # Download link is bitcoin source
+          BITCOIN_VER="Bitcoin Core 0.21rc1"
           break
           ;;
 
@@ -48,7 +54,7 @@ function configure {
 
   local time_snapshot=$(date +%I:%M:%S)
   DATA_FILE=${DATA_DIR}/"data-${time_snapshot}.json"
-
+  touch ${DATA_FILE}
   # Write collected System Informatio
   write_sys_info
 

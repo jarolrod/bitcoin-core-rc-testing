@@ -22,4 +22,5 @@ write_config_info() {
     \"compile\": ${COMPILE}
   }," >> ${DATA_FILE}
 
+  CONFIG_INFO_WRITE=1
 }

@@ -1,6 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
+# Use with permissioned tasks
 
-function ask_permission {
+ask_permission() {
   CHOICE=''
   local prompt="$1"
   while true; do

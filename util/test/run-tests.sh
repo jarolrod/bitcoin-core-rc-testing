@@ -11,8 +11,6 @@ run_tests() {
   local function_name=''
   local dir_num_tests=0
 
-  TEST_FILE_NAME=()
-  TEST_FUNCTION=()
   CURRENT_TEST_FILE=''
   CURRENT_TEST_NAME=''
   echo " "
@@ -33,37 +31,37 @@ run_tests() {
     echo "${BOLD}${TEST_TYPE} Tests${RESET}"
     # Log test type
     echo "    \"${TEST_TYPE}\": {" >> ${DATA_FILE}
-    # of dirs
 
     dir_num_tests=$(ls ${dir} | wc -l | xargs)   # gets number of tests
-    if [ $dir_num_tests -gt 1 ]; then
-      NUM_TEST=$(( $NUM_TEST + $dir_num_tests ))
-      for test in ${dir}/*.sh;    # Test is a shell script
-      do
-        file_base_name=$(basename -- $test)
-        #TEST_FILE_NAME+=($file_base_name)
-        function_name=${file_base_name%.*}
-        #TEST_FUNCTION+=($function_name)
-        source $test;
-        CURRENT_TEST_FILE="${file_base_name}"
-        CURRENT_TEST_NAME="${function_name}"
-        # Test has been sourced -> run
-        ${function_name}
+    [ $dir_num_tests -gt 1 ] \
+      && {
+        NUM_TEST=$(( $NUM_TEST + $dir_num_tests ))
+        # Test is a shell script
+        for test in ${dir}/*.sh;
+        do
+          file_base_name=$(basename -- $test)
+          function_name=${file_base_name%.*}
+          source $test;
+          CURRENT_TEST_FILE="${file_base_name}"
+          CURRENT_TEST_NAME="${function_name}"
+          # Test has been sourced -> run
+          ${function_name}
+          ((TEST_INDEX++))
+        done
+      } \
+      || echo "${WARNING} No tests found in this directory"
 
-        ((TEST_INDEX++))
-      done
-    else
-      echo "${WARNING} No tests found in this directory"
-    fi
+    # Add ending bracket -> with or without comma
+    [ $test_dir_index -eq $test_dir_num ] \
+      && echo "    }" >> ${DATA_FILE} \
+      || echo "    }," >> ${DATA_FILE}
 
-    if [ $test_dir_index -eq $test_dir_num ]; then
-      # Close json object for this type of test without comma
-      echo "    }" >> ${DATA_FILE}
-    else
-      echo "    }," >> ${DATA_FILE}
-    fi
+    # Move to next test
     ((test_dir_index++))
   done
+
+  # Signal that all tests are complete
+  TEST_COMPLETE=1
 
   # close test_data json object
   echo "  }" >> ${DATA_FILE}
