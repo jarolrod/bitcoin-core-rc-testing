@@ -7,7 +7,7 @@
 
 node_warmup () {
   c=1 # seconds to wait
-  echo "${BOLD}Nodes are warming up"
+  echo "${BOLD}Node is warming up"
   REWRITE=". "
   while [ $c -le 5 ]; do
       c=$((c+1))

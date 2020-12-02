@@ -6,11 +6,14 @@
 # Helper Function to unpack Bitcoin
 
 unpack_btc() {
+  # Seperate new section
+  seperator
+
   # Compile if user downloaded source
   echo "${RESET}${BOLD}Unpacking ${BITCOIN_VER} ${TYPE}${RESET}"
   # Find a bitcoin archive file
   local bitcoin_zip=$(basename -- $(find ${REGTEST_DIR} -type f -name "*.gz"))
-  # Found if local_zip is not empty
+  # Found if bitcoin_zip is not empty
   [ -n "${bitcoin_zip}" ] \
     && {
       echo "${SUCCESS} Found Bitcoin ${TYPE} Archive File"
@@ -22,7 +25,11 @@ unpack_btc() {
 
       # Found if not empty
       [ -n "$BITCOIN_DIR" ] \
-        && echo "${SUCCESS} Unpacked Bitcoin ${TYPE} Archive File" \
+        &&  {
+        echo "${SUCCESS} Unpacked Bitcoin ${TYPE} Archive File"
+        # Signal that Bitcoin Directory was created
+        CREATED_BITCOIN_DIR=1
+        } \
         || { echo "${FAILURE} Could not unpack Bitcoin ${TYPE} Archive File" ; exit ; }
     } \
     || { echo "${FAILURE} Could not find Bitcoin Archive File" ; exit ; }

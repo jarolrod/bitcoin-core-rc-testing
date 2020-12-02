@@ -6,5 +6,6 @@
 # Remove Bitcoin Directory when it is no longer needed
 
 remove_bitcoindir() {
+  echo "${RESET}${BOLD}[${1}/${2}]: Remove Bitcoin Directory"
   rm -rf $BITCOIN_DIR && echo "${SUCCESS} Removed Bitcoin Directory"
 }

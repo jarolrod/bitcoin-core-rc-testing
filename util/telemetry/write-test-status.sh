@@ -3,9 +3,11 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
-# Show help information
+# log test status
 
-help() {
-  echo "help"
+write_test_status() {
+  echo "
+    \"$1\": {
+      \"success\": ${2}," >> ${DATA_FILE}
 
 }

@@ -6,19 +6,21 @@
 # log test data to data.json
 
 write_test_info() {
+  # write test status
+  write_test_status ${1} ${2}
 
+  # write test log
+  write_test_log
+
+
+  # close test json object
   [ $TEST_INDEX -eq $NUM_TEST ] \
     && {
       echo "
-        \"$1\": {
-          \"success\": 1
         }" >> ${DATA_FILE}
     } \
     || {
       echo "
-        \"$1\": {
-          \"success\": 1
         }," >> ${DATA_FILE}
     }
-
 }

@@ -11,6 +11,8 @@ run_tests() {
   local function_name=''
   local dir_num_tests=0
 
+  declare -A CURRENT_TEST_LOG
+
   CURRENT_TEST_FILE=''
   CURRENT_TEST_NAME=''
   echo " "
@@ -33,20 +35,26 @@ run_tests() {
     echo "    \"${TEST_TYPE}\": {" >> ${DATA_FILE}
 
     dir_num_tests=$(ls ${dir} | wc -l | xargs)   # gets number of tests
-    [ $dir_num_tests -gt 1 ] \
+    [ $dir_num_tests -gt 0 ] \
       && {
         NUM_TEST=$(( $NUM_TEST + $dir_num_tests ))
         # Test is a shell script
         for test in ${dir}/*.sh;
         do
           file_base_name=$(basename -- $test)
-          function_name=${file_base_name%.*}
-          source $test;
-          CURRENT_TEST_FILE="${file_base_name}"
-          CURRENT_TEST_NAME="${function_name}"
-          # Test has been sourced -> run
-          ${function_name}
-          ((TEST_INDEX++))
+
+          # File name must contain "test"
+          [[ $file_base_name == *"test"* ]] \
+            && {
+              function_name=${file_base_name%.*}
+              #echo $function_name
+              . $test
+              CURRENT_TEST_FILE="${file_base_name}"
+              CURRENT_TEST_NAME="${function_name}"
+              # Test has been sourced -> run
+              ${function_name}
+              ((TEST_INDEX++))
+            }
         done
       } \
       || echo "${WARNING} No tests found in this directory"

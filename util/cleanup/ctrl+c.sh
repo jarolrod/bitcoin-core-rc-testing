@@ -8,21 +8,7 @@
 ctrl+c() {
   # Confirm user wants to quit
   echo "${BOLD}${YELLOW}Script will now stop.${RESET}"
-  sleep 1
-  exit
-
-  # Has system check happened?
-
-  # Has configuration complete?
-
-  # Did Downloading Bitcoin source/code release finish?
-
-  # Did unpacking finish?
-
-  # Did checking sigs finish?
-
-  # If compile -> Did compiling finish
-
-  # Did tests finsh?
-
+  SCRIPT_INTERRUPT=1      # Signal that script was interrupted
+  sleep 1                 # sleep for visual clarity
+  cleanup                 # run cleanup
 }

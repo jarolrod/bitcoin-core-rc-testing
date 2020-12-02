@@ -5,10 +5,7 @@
 #
 # Command a node to run a provided rpc command
 
-# $1. node index, $2. rpc string
+# $1. datadir, $2. rpc string
 run_rpc() {
-  # Compose complete rpc command string
-  rpc_string="${BITCOINCLI[$1]} $2"
-  # run rpc command, fail if error
-  ${BTC_SRC}/${rpc_string}
+  ${BTC_SRC}/./bitcoin-cli -datadir=${1} ${2}
 }

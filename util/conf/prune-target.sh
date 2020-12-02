@@ -3,9 +3,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
-# Show help information
+# set prune target for node
 
-help() {
-  echo "help"
-
+prune_target() {
+  echo "prune=550" >> ${1}
 }

@@ -10,7 +10,7 @@ configure() {
   local bit_src="${GREEN}Source Code${RESET}${BOLD}"
   local bit_rel="${GREEN}Release${RESET}${BOLD}"
 
-  echo "${BOLD}Would you like to download the Bitcoin Source Code or Official Release:"
+  echo "${BOLD}Download Bitcoin Core Source Code or Official Release:"
   select type in "$bit_src" "$bit_rel"
   do
     case $type in
@@ -18,7 +18,7 @@ configure() {
           COMPILE=1                       # We will be compiling bitcoin
           TYPE="Source Code"              # Type of bitcoin download is source
           DOWNLOAD_LINK=$BITCOIN_SOURCE   # Download link is bitcoin source
-          BITCOIN_VER="Bitcoin Core 0.21rc1"
+          BITCOIN_VER="Bitcoin Core 0.21rc2"
           break
           ;;
 
@@ -35,10 +35,12 @@ configure() {
     esac
   done
 
+  seperator
+
   # Configure: Telemetry Data
   echo "Bitcoin Core Developers can benefit from your test data."
-  echo -n "Would you like to opt-in to privately send your test output?"
-  echo " (You will get a local copy regardless.)"
+  echo "Would you like to opt-in to privately send your test output?"
+  echo "Note: You will get a local copy regardless"
   echo "You can learn more about how this data will be used at [Link TBD]"
   local yes="${GREEN}Yes${RESET}${BOLD}: Send my test data"
   local no="${RED}No${RESET}${BOLD}: Do not send my test data"

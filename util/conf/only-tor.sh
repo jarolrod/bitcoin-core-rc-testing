@@ -3,9 +3,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
-# Show help information
+# make node only connect through tor
 
-help() {
-  echo "help"
-
+only_tor() {
+  echo "onlynet=onion" >> ${1}
 }
