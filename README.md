@@ -29,7 +29,7 @@ Here are some guides to compile Bitcoin Core from source for [OSX](https://githu
 For those upgrading, [a draft of the 0.21 release notes](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft#how-to-upgrade) have instructions.
 
 Things to test:
-- [x] [Tor](/tests/tor.md)
+- [x] [Tor](tests/tor/README.md)
 - [ ] [Signet]()
 - [ ] [Anchor connections]()
 - [ ] [Wtxid]()

@@ -1,11 +1,9 @@
 #!/bin/bash
-BITCOIN_VER="Bitcoin Core 0.20.1"
-# Download source in order to test 0.21 features
-BITCOIN_SOURCE="https://github.com/bitcoin/bitcoin/archive/v0.21.0rc2.tar.gz"
-BITCOIN_LINUX="https://bitcoincore.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-x86_64-linux-gnu.tar.gz"
-BITCOIN_MAC="https://bitcoincore.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-osx64.tar.gz"
-RELEASE_SIG="https://bitcoincore.org/bin/bitcoin-core-0.20.1/SHA256SUMS.asc"
-
+BITCOIN_VER="Bitcoin Core 0.21"
+BITCOIN_SOURCE="https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2.tar.gz"
+BITCOIN_LINUX="https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-x86_64-linux-gnu.tar.gz"
+BITCOIN_MAC="https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-osx64.tar.gz"
+RELEASE_SIG="https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/SHA256SUMS.asc"
 
 # Default Values
 NUM_NODES=3                               # Default: Generate three nodes
