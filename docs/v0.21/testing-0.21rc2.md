@@ -1,5 +1,5 @@
 # Testing Guide: Bitcoin Core 0.21 Release Candidate
-This document outlines some of the changes in the upcoming Bitcoin Core 0.21 release and steps on how to test these releases
+This document outlines some of the changes in the upcoming Bitcoin Core 0.21 release and provides steps on how to test these changes.
 
 ## Introduction
 
@@ -12,15 +12,17 @@ You can get involved by running through this guide and checking that everything 
 **Current Release Candidate:** [Bitcoin Core 0.21rc3](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3) [(changelog)](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft)
 
 There are two ways to grab the latest release candidate: pre-compiled binary, or source code.
-The source code for the latest release can be grabbed from here: [latest release source code]()
+The source code for the latest release can be grabbed from here: [latest release source code](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3)
 
-If you want to use a binary, make sure to grab the correct one for your system. There are individual binaries for [MacOS](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-osx.dmg), [Linux](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-x86_64-linux-gnu.tar.gz), [Arm (64 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-aarch64-linux-gnu.tar.gz), [Arm (32 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-arm-linux-gnueabihf.tar.gz), and [RISC-V](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-riscv64-linux-gnu.tar.gz).
+If you want to use a binary, make sure to grab the correct one for your system. There are individual binaries for [Linux](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-x86_64-linux-gnu.tar.gz), [Arm (64 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-aarch64-linux-gnu.tar.gz), [Arm (32 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-arm-linux-gnueabihf.tar.gz), and [RISC-V](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-riscv64-linux-gnu.tar.gz).
+
+macOS users will need to either compile from source or use the [rc2 binary](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-osx.dmg) until we can figure out Apple's code signing issue.
 
 #### 2. Compile Release Candidate
 
-Note: If you grabbed a binary, you can skip this step.
+If you grabbed a binary, skip this step.
 
-Before compiling, make sure that your system has all the right dependencies installed. Here are some guides to compile Bitcoin Core from source for [OSX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [Windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md), and [UNIX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md).
+Before compiling, make sure that your system has all the right dependencies installed. As this guide utilizes the Bitcoin Core GUI, you must compile support for the GUI and have the `qt5` dependency already installed. To test the new wallet changes, make sure that you installed the `sqlite3` dependency. Here are some guides to compile Bitcoin Core from source for [OSX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [Windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md), and [UNIX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md).
 
 ---
 ## Testing Wallet Changes
@@ -37,25 +39,45 @@ As mentioned; The current wallet uses `BerkelyDB 4.8`, which is 10 years old. Th
 SQlite was chosen as a new database because it provides certain guarantees that are important for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkelyDB 4.8`, SQlite allows us to have a one file wallet instead of a wallet directory.
 
 ### 1. Preparation
-If you grabbed the binary for this release candidate, you're good to go. If you went down the source route, it is required that you installed the `sqlite3` dependency and compiled the source code with wallet functionality. Skip this section if you intentionality do not want wallet functionality, or don't want to test it. This guide will be split between using the GUI and the CLI. Follow whichever you are comfortable using.
+If you grabbed the binary for this release candidate, you're good to go. If you went down the source route, it is required that you installed the `sqlite3` dependency and compiled the source code with wallet functionality.
 
 ### 2. Manual Testing
 
-#### 1. Create new Descriptor Wallet
-##### New Default Behavior
-Upon start, a node no longer creates a wallet by default. We will need to create a new wallet. If you are starting up a node for the first time or using a fresh data directory, you will be met with the following screen.
+##### 1. Create a new data directory
+We will be creating and supplying a new data directory for our node to run from. Starting from the root of your Bitcoin release candidate directory, run:
+
+``` bash
+mkdir my-wallet
+```
+##### 2. Run node, provide data directory
+We will now run `bitcoin-qt` and provide a data directory:
+
+###### Source code
+
+``` bash
+./src/qt/bitcoin-qt --datadir=./my-wallet
+```
+
+###### Binary
+``` bash
+./bin/bitcoin-qt --datadir=./my-wallet
+```
+##### 3. Create new Descriptor Wallet
+
+###### New Default Behavior
+Upon start, a node no longer creates a wallet by default. We will need to create a new wallet. If you are starting up a node for the first time or using a fresh data directory (as we are), you will be met with the following screen:
 
 ![new wallet intro](https://imgur.com/4UlP090.png)
 
-##### Create New Wallet
-Clicking on "Create a new Wallet" will bring you to the following screen. Give your wallet a name and make sure to have `Descriptor Wallet` enabled under `Advanced Options`. You've created your first descriptor wallet
+###### Create New Wallet
+Clicking on "Create a new Wallet" will bring you to the following screen. Give your wallet a name and make sure to have `Descriptor Wallet` enabled under `Advanced Options`. Congratulations, You've created your first descriptor wallet!
 
 ![descriptor](https://imgur.com/xIuT09U.png)
 
-##### Check for `wallet.dat`
-Navigate to your wallet's data directory and ensure that a `wallets.dat` file has been created.
+##### 4. Check for `wallet.dat`
+First, shut down your node. Then, Navigate to your wallet's data directory and ensure that a `wallets.dat` file has been created. under a directory with the value you supplied as `Wallet Name`. In the case of this example it is `my-descriptor-wallet`. You should see something like this:
 
-
+![wallet-dat](https://imgur.com/w9mzT7q.png)
 
 ---
 
@@ -98,15 +120,47 @@ $ tor
 ### 2. Manual Testing
 For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some linux distros if there is a tor daemon running on the machine bitcoind will pick it up and authenticate with a cookie file.
 
-#### Manual Testing with GUI
-
-#### Listen on torv3
+#### Listen on TorV3
 We are going to setup our node to [automatically listen on Tor](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md#3-automatically-listen-on-tor). This means that the node is going to look for other peers on the tor network.
+
+##### 1. Create bitcoin.conf
+The `bitcoin.conf` file is used to [configure](https://en.bitcoin.it/wiki/Running_Bitcoin#Bitcoin.conf_Configuration_File) how your node will run. This file is not automatically created and must be created manually. This file will be created in the data directory that we previously created while testing the wallet. From your data directory, run:
+
+``` bash
+touch bitcoin.conf
+```
+##### 2. Edit bitcoin.conf
+Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
+
+```
+proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.
+listen=1
+bind=127.0.0.1
+onlynet=onion
+
+# add torv3 nodes
+
+```
+##### 3. Launch bitcoin-qt
+Launch `bitcoin-qt` and provide the data directory we have been using:
+
+###### Source code
+
+``` bash
+./src/qt/bitcoin-qt --datadir=./my-wallet
+```
+
+###### Binary
+``` bash
+./bin/bitcoin-qt --datadir=./my-wallet
+```
+
+##### 4. Check for tor peers
 
 ---
 
 ## Testing Signet
-The Bitcoin [testnet](https://en.bitcoin.it/wiki/Testnet) is a [proof-of-work](https://en.bitcoin.it/wiki/Proof_of_work) based testing framework where volunteers are relied on to [mine](https://en.bitcoin.it/wiki/Mining) [blocks](https://en.bitcoin.it/wiki/Block) with real CPU power and in turn receive worthless testnet coins. Since the economics of the the mainnet are not at play here; we get a network that is unpredictable and, frustratingly, unreliable.
+The Bitcoin [testnet](https://en.bitcoin.it/wiki/Testnet) is a proof-of-work based testing framework where volunteers are relied on to mine blocks with real CPU power and in turn receive worthless `testnet` coins. Since the economics of the `mainnet` are not at play here, we get a network that is unpredictable and, frustratingly, unreliable.
 
 This release introduces [Signet](https://bitcoinops.org/en/topics/signet/), a new testing network. Signet does away with decentralized proof-of-work in favor of a centralized consensus mechanism where a group with authority is in charge of creating new blocks based on valid signatures. The aim is to create a testing network that is predictable and reliable.
 
@@ -118,33 +172,39 @@ The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page) contains excellent docu
 ## Testing Anchors
 An [eclipse attack](https://cs-people.bu.edu/heilman/eclipse/) is an attack on bitcoin's p2p network. In order for the attack to be effective, the attacker aims to restart your node and then supply your node with IP addresses controlled by the attacker. Eclipse attacks reduce the soundness of second layer solutions such as the lightning network.
 
-
-When you're node connects to the Bitcoin network, it makes at least [two outbound block-relay only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the [two outbound block-relay connections]() your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce an eclipse attack from being successful.
+When you're node connects to the Bitcoin network, it makes at least [two outbound block-relay-only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the [two outbound block-relay connections]() your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce an eclipse attack from being successful.
 
 ### 1. Manual Testing
-When a node shuts down cleanly, then an `anchors.dat` file should appear in the node's data directory. We want to check that this file is created upon node shut-down, and deleted on node start-up. This guide will be split between using the GUI and the CLI. Follow whichever you are comfortable using.
+When a node shuts down cleanly, then an `anchors.dat` file should appear in the node's data directory. We want to check that this file is created upon node shut-down, and deleted on node start-up.
 
-#### Manual Testing with GUI
+#### 1. Clean up data directory
+We want to delete the `bitcoin.conf` in our data directory as we no longer need to connect through tor. You're free to leave this in if you like. In the data directory do:
+``` bash
+rm ./bitcoin.conf
+```
 
-##### 1. Start up your node through bitcoin-qt
-Start your node however you do so.
+#### 2. Start up your node through bitcoin-qt
+Start your node however you do so. If the release candidate is integrated into your desktop environment or is packaged into a `.dmg` in the case of macOS, launch `bitcoin-qt` from your application launcher. Otherwise, starting from the root directory of your binary or source download, run:
 
-##### 2. Navigate to Peers Window
-Navigate to and click on Window->Peers to bring up information on the connected Peers.
-![Window->Peers](https://imgur.com/kHq8NFD.png)
+``` bash
+./src/qt/bitcoin-qt
+```
+#### 3. Navigate to Peers Window
+Navigate to and click on `Window->Peers` to bring up information on the connected Peers.
+![Window->Peers](https://imgur.com/gONbuA7.png)
 
-##### 3. Confirm Peer connections
+#### 4. Confirm Peer connections
 At the peer information page, visually check that you are connected to peers.
 ![peers](https://imgur.com/7M6AW6D.png)
 
-##### 4. Shut down your node
+#### 5. Shut down your node
 Shut down your node by navigating and clicking on File->Exit.
-![shut-down](https://imgur.com/ceiJanF.png)
+![shut-down](https://imgur.com/GSgvHhc.png)
 
-##### 5. Check for a `anchors.dat` File
+#### 6. Check for a `anchors.dat` File
 Navigate to the data directory for your node.
 ![check-anchorsdat](https://imgur.com/AOCnuZ4.png)
 
-##### 6. Restart node and check that `anchors.dat` is removed
+#### 7. Restart node and check that `anchors.dat` is removed
 Restart your node, then navigate to your data directory. The image below is the data directory for a Bitcoin node while it is running, notice that the `anchors.dat` file is missing. This is the expected behavior.
 ![anchor-gone](https://imgur.com/tydZLxa.png)
