@@ -3,9 +3,9 @@ This document outlines some of the changes in the upcoming Bitcoin Core 0.21 rel
 
 ## Introduction
 
-The release candidate for version 0.21 was just tagged and is ready for testing. And, oh boy, is 0.21 the right time for you to get involved as a contributer. It’s jam-packed with changes that need to be run on your operating system with your hardware. Database changes? Welcome SQLite. A new network to test on? Hello, signet. Have you heard that Tor v2 is being deprecated? The upgrade to Tor v3 is in 0.21. What about the wallet? Total re-write.
+The release candidate for version 0.21 was just tagged and is ready for testing. And, oh boy, is 0.21 the right time for you to get involved as a contributor. It’s jam-packed with changes that need to be run on your operating system with your hardware. Database changes? Welcome [SQLite](https://github.com/bitcoin/bitcoin/pull/19077). A new network to test on? Hello, [signet](https://github.com/bitcoin/bitcoin/pull/18267). Have you heard that Tor v2 is being deprecated? The upgrade to [Tor v3](http://github.com/bitcoin/bitcoin/pull/19954) is in 0.21. What about the wallet? [Total re-write](https://achow101.com/2020/10/0.21-wallets).
 
-You can get involved by running through this guide and checking that everything works as it should on your machine. Please report back your findings [here](https://github.com/bitcoin/bitcoin/issues/20555#issue-755970426). If everything went smoothly, let us know. If everything broke, definitely let us know!
+You can get involved by running through this guide and checking that everything works as it should on your machine. Please report back your findings [here](https://github.com/bitcoin/bitcoin/issues/20555). If everything went smoothly, let us know. If everything broke, definitely let us know!
 
 ## Preparation
 #### 1. Grab Latest Release Candidate
@@ -20,26 +20,26 @@ macOS users will need to either compile from source or use the [rc2 binary](http
 
 #### 2. Compile Release Candidate
 
-If you grabbed a binary, skip this step.
+**If you grabbed a binary, skip this step.**
 
 Before compiling, make sure that your system has all the right dependencies installed. As this guide utilizes the Bitcoin Core GUI, you must compile support for the GUI and have the `qt5` dependency already installed. To test the new wallet changes, make sure that you installed the `sqlite3` dependency. Here are some guides to compile Bitcoin Core from source for [OSX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [Windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md), and [UNIX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md).
 
 ---
 ## Testing Wallet Changes
-The Bitcoin Core 0.21 release introduces sweeping changes to the wallet in an attempt to move towards a well designed wallet, capable of full-utilization of Bitcoin. This release introduces [descriptor wallets](https://diyhpl.us/wiki/transcripts/advancing-bitcoin/2020/2020-02-06-andrew-chow-descriptor-wallets/), a new type of wallet that generates addresses from [descriptors](https://bitcoinops.org/en/topics/output-script-descriptors/) instead of private keys. Tied together with this new wallet type is a new [SQLite](https://www.sqlite.org/index.html) database that aims to replace the aging [BerkeleyDB 4.8](https://blogs.oracle.com/berkeleydb/berkeley-db-48) database currently used.
+The Bitcoin Core 0.21 release introduces sweeping changes to the wallet to move towards a well-designed wallet, capable of full-utilization of Bitcoin. This release introduces [descriptor wallets](https://diyhpl.us/wiki/transcripts/advancing-bitcoin/2020/2020-02-06-andrew-chow-descriptor-wallets/), a new type of wallet that generates addresses from [descriptors](https://bitcoinops.org/en/topics/output-script-descriptors/) instead of private keys. Tied together with this new wallet type is a new [SQLite](https://www.sqlite.org/index.html) database that aims to replace the aging [BerkeleyDB 4.8](https://blogs.oracle.com/berkeleydb/berkeley-db-48) database currently used.
 
 **What's wrong with the current (legacy) wallets?**
 
-The current wallet was designed at a time when what Bitcoin could be used for was not yet fully understood. This led to a wallet design language that focused on maintaining a collection of [private keys](https://en.bitcoin.it/wiki/Private_key). As Bitcoin has progressed, this design language has held back the wallet from fully utilizing the expressiveness of [Bitcoin Script](https://en.bitcoin.it/wiki/Script). New features have had to be hacked on to the wallet.
+The current wallet was designed when what Bitcoin could be used for was not yet fully understood. This led to a wallet design language that focused on maintaining a collection of [private keys](https://en.bitcoin.it/wiki/Private_key). As Bitcoin has progressed, this design language has held back the wallet from fully utilizing the expressiveness of [Bitcoin Script](https://en.bitcoin.it/wiki/Script). New features have had to be hacked on to the wallet.
 
 **Why the Switch to SQlite?**
 
 As mentioned; The current wallet uses `BerkelyDB 4.8`, which is 10 years old. This database is not actively maintained, not meant to be used as an application database, and is susceptible to file corruptions. Since the move to descriptor wallets introducing breaking compatibility changes,
 
-SQlite was chosen as a new database because it provides certain guarantees that are important for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkelyDB 4.8`, SQlite allows us to have a one file wallet instead of a wallet directory.
+SQLite was chosen as a new database because it provides certain guarantees necessary for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkelyDB 4.8`, SQLite allows us to have a one file wallet instead of a wallet directory. This helps with wallet portability.
 
 ### 1. Preparation
-If you grabbed the binary for this release candidate, you're good to go. If you went down the source route, it is required that you installed the `sqlite3` dependency and compiled the source code with wallet functionality.
+If you grabbed the binary for this release candidate, you're good to go. If you went down the source route, it is required that you installed the `sqlite3` dependency and compiled the source code with wallet functionality. Skip this section if you intentionally do not want wallet functionality or don't want to test it.
 
 ### 2. Manual Testing
 
@@ -83,24 +83,23 @@ First, shut down your node. Then, Navigate to your wallet's data directory and e
 
 ## Testing Torv3
 
-Current nodes are limited to relaying addresses which fit into 128 bits. This limitation hinders Bitcoin nodes to a small set of network types. The upcoming Bitcoin Core release incorporates an implementation of [BIP 155](https://github.com/bitcoin/bips/blob/master/bip-0155.mediawiki) which introduces a new P2P message that allows network nodes to gossip addresses which are longer than 128 bits. This opens up the possibility of running nodes on new network types such as I2P and Tor V3.
+Current nodes are limited to relaying addresses that fit into 128 bits. This limitation hinders Bitcoin nodes to a small set of network types. The upcoming Bitcoin Core release incorporates an implementation of [BIP 155](https://github.com/bitcoin/bips/blob/master/bip-0155.mediawiki), which introduces a new P2P message that allows network nodes to gossip addresses that are longer than 128 bits. This opens up the possibility of running nodes on new network types such as I2P and Tor V3.
 
 **Why do we want to add compatibility for Tor v3 addresses?**
 
-Tor v2 addresses contain various vulnerabilities which expose a node to a variety of [attacks](https://github.com/Attacks-on-Tor/Attacks-on-Tor). v2 addresses are also over a decade old, they are scheduled to be [retired](https://blog.torproject.org/v2-deprecation-timeline) by October 15, 2021. [Tor Onion v3](https://www.jamieweb.net/blog/onionv3-hidden-service/) addresses use a stronger ecryption format that fixes some of v2's weaknesses.
+Tor v2 addresses contain various vulnerabilities that expose a node to a variety of [attacks](https://github.com/Attacks-on-Tor/Attacks-on-Tor). V2 addresses are also over a decade old, they are scheduled to be [retired](https://blog.torproject.org/v2-deprecation-timeline) by October 15, 2021. [Tor Onion v3](https://www.jamieweb.net/blog/onionv3-hidden-service/) addresses use a stronger encryption format that fixes some of v2's weaknesses.
 
 **What else do I need to know about this change?**
 
-Accommodating for the new address sizes makes the `peers.dat` backwards-incompatible. A `peers.dat` file created with a 0.21 node will not be backwards compatible with a node <0.21.
+Accommodating for the new address sizes makes the `peers.dat` backwards incompatible. A `peers.dat` file created with a 0.21 node will not be backwards compatible with a node <0.21.
 
 ### 1. Preparation
-Tor must be installed on your system for the tor related tests to function properly. The script currently assumes that tor is running on the default UNIX port of 9050. Below are some guides to setting up the `tor` package on your system.
-
+Tor must be installed on your system for the Tor related tests to function properly. The script currently assumes that Tor is running on the default UNIX port of 9050. Below are some guides to setting up the `tor` package on your system.
 
 #### macOS Instructions
 
 ##### 1. Homebrew
-The easiest way to install `tor` for MacOS is to use [homebrew](https://brew.sh/). This package manager allows you to easily install packages right from the command line.
+The easiest way to install `tor` for MacOS is to use [homebrew](https://brew.sh/). This package manager allows you to easily install packages right from the command line easily.
 
 To install homebrew (if not already installed):
 ```
@@ -118,10 +117,10 @@ $ tor
 ```
 
 ### 2. Manual Testing
-For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some linux distros if there is a tor daemon running on the machine bitcoind will pick it up and authenticate with a cookie file.
+For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some linux distros if there is a Tor daemon running on the machine `bitcoind` will pick it up and authenticate with a cookie file.
 
 #### Listen on TorV3
-We are going to setup our node to [automatically listen on Tor](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md#3-automatically-listen-on-tor). This means that the node is going to look for other peers on the tor network.
+We are going to setup our node to [listen on Tor automatically](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md#3-automatically-listen-on-tor). This means that the node is going to look for other peers on the Tor network.
 
 ##### 1. Create bitcoin.conf
 The `bitcoin.conf` file is used to [configure](https://en.bitcoin.it/wiki/Running_Bitcoin#Bitcoin.conf_Configuration_File) how your node will run. This file is not automatically created and must be created manually. This file will be created in the data directory that we previously created while testing the wallet. From your data directory, run:
@@ -130,7 +129,7 @@ The `bitcoin.conf` file is used to [configure](https://en.bitcoin.it/wiki/Runnin
 touch bitcoin.conf
 ```
 ##### 2. Edit bitcoin.conf
-Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
+We will be adding settings to the bitcoin.conf that will allow us to connect and find peers through the Tor network. Since the Bitcoin Core 0.21 release has not been actually been released yet, `Torv3` nodes are rare to come across. Because of this, we are going to manually add a `Torv3` node that has been tracked down. Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
 
 ```
 proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.
@@ -138,9 +137,12 @@ listen=1
 bind=127.0.0.1
 onlynet=onion
 
-# add torv3 nodes
+addnode=sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd.onion:8333
+addnode=rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333
 
 ```
+Examine the [example bitcoin.conf](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf) file for an overview of available options.
+
 ##### 3. Launch bitcoin-qt
 Launch `bitcoin-qt` and provide the data directory we have been using:
 
@@ -155,7 +157,15 @@ Launch `bitcoin-qt` and provide the data directory we have been using:
 ./bin/bitcoin-qt --datadir=./my-wallet
 ```
 
-##### 4. Check for tor peers
+##### 4. Check for Tor peers
+###### Navigate to Peers Window
+Navigate to and click on `Window->Peers` to bring up information on the connected Peers.
+![Window->Peers](https://imgur.com/gONbuA7.png)
+
+###### Visually Examine Peer Information
+You can differentiate a Torv3 node from a Torv2 node by looking at how long it is. A Torv3 node is 56 characters long and always ends in a `d` such as: `sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd.onion`. A Torv2 node is 16 characters long, such as: `uovsp2yltnaojq6l.onion:8333`. Your Peer window should look something like this:
+
+![torv3-peers](https://imgur.com/ISzPLKe.png)
 
 ---
 
@@ -165,7 +175,7 @@ The Bitcoin [testnet](https://en.bitcoin.it/wiki/Testnet) is a proof-of-work bas
 This release introduces [Signet](https://bitcoinops.org/en/topics/signet/), a new testing network. Signet does away with decentralized proof-of-work in favor of a centralized consensus mechanism where a group with authority is in charge of creating new blocks based on valid signatures. The aim is to create a testing network that is predictable and reliable.
 
 ## 1. Manual Testing
-The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page) contains excellent documentation on connecting to and testing Signet. Follow this [guide](https://en.bitcoin.it/wiki/Signet) to test signet.
+The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page) contains excellent documentation on connecting to and testing Signet. Follow this [guide](https://en.bitcoin.it/wiki/Signet) to test Signet.
 
 ---
 
@@ -201,10 +211,10 @@ At the peer information page, visually check that you are connected to peers.
 Shut down your node by navigating and clicking on File->Exit.
 ![shut-down](https://imgur.com/GSgvHhc.png)
 
-#### 6. Check for a `anchors.dat` File
+#### 6. Check for an `anchors.dat` File
 Navigate to the data directory for your node.
 ![check-anchorsdat](https://imgur.com/AOCnuZ4.png)
 
 #### 7. Restart node and check that `anchors.dat` is removed
-Restart your node, then navigate to your data directory. The image below is the data directory for a Bitcoin node while it is running, notice that the `anchors.dat` file is missing. This is the expected behavior.
+Restart your node, then navigate to your data directory. The image below is the data directory for a Bitcoin node while it is running. Notice that the `anchors.dat` file is missing. This is the expected behavior.
 ![anchor-gone](https://imgur.com/tydZLxa.png)
