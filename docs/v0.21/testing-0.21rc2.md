@@ -139,11 +139,39 @@ onlynet=onion
 
 addnode=sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd.onion:8333
 addnode=rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333
-
 ```
-Examine the [example bitcoin.conf](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf) file for an overview of available options.
 
-##### 3. Launch bitcoin-qt
+(Cutting an pasting the text above should do the trick, but you can see the [example bitcoin.conf](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf) file for an overview of the available options.
+
+##### 3a. Start bitcoind
+
+```bash
+./src/bitcoind --datadir=./21-rc-test
+```
+
+You will see a flurry of messages as the logs pass by. Open a new terminal window and let's query our running node to see who we've connected to:
+
+```bash
+./src/bitcoin-cli --datadir=./21-rc-test getpeerinfo
+```
+
+This should show you a list of peers. This is what a first one might look like:
+```bash
+[
+  {
+    "id": 0,
+    "addr": "rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333",
+    ...
+    "network": "onion",
+    ...
+  }
+]
+```
+
+If you have "rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread" or "sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd" in the response, you've successfully connected to a Tor v3 node! :tada:
+
+##### 3b. Launch bitcoin-qt
+
 Launch `bitcoin-qt` and provide the data directory we have been using:
 
 ###### Source code
