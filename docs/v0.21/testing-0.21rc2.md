@@ -1,5 +1,5 @@
 # Testing Guide: Bitcoin Core 0.21 Release Candidate
-This document outlines some of the changes in the upcoming Bitcoin Core 0.21 release and provides steps on how to test these changes.
+This document outlines some of the upcoming Bitcoin Core 0.21 release changes and provides steps on how to test these changes.
 
 ## Introduction
 
@@ -11,8 +11,8 @@ You can get involved by running through this guide and checking that everything 
 #### 1. Grab Latest Release Candidate
 **Current Release Candidate:** [Bitcoin Core 0.21rc3](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3) [(changelog)](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft)
 
-There are two ways to grab the latest release candidate: pre-compiled binary, or source code.
-The source code for the latest release can be grabbed from here: [latest release source code](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3)
+There are two ways to grab the latest release candidate: pre-compiled binary or source code.
+The source code for the latest release can be grabbed from here: [latest release source code](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3).
 
 If you want to use a binary, make sure to grab the correct one for your system. There are individual binaries for [Linux](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-x86_64-linux-gnu.tar.gz), [Arm (64 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-aarch64-linux-gnu.tar.gz), [Arm (32 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-arm-linux-gnueabihf.tar.gz), and [RISC-V](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-riscv64-linux-gnu.tar.gz).
 
@@ -47,7 +47,7 @@ If you grabbed the binary for this release candidate, you're good to go. If you 
 We will be creating and supplying a new data directory for our node to run from. Starting from the root of your Bitcoin release candidate directory, run:
 
 ``` bash
-mkdir my-wallet
+mkdir 21-rc-test
 ```
 ##### 2. Run node, provide data directory
 We will now run `bitcoin-qt` and provide a data directory:
@@ -55,12 +55,12 @@ We will now run `bitcoin-qt` and provide a data directory:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=./my-wallet
+./src/qt/bitcoin-qt --datadir=./21-rc-test
 ```
 
 ###### Binary
 ``` bash
-./bin/bitcoin-qt --datadir=./my-wallet
+./bin/bitcoin-qt --datadir=./21-rc-test
 ```
 ##### 3. Create new Descriptor Wallet
 
@@ -75,7 +75,7 @@ Clicking on "Create a new Wallet" will bring you to the following screen. Give y
 ![descriptor](https://imgur.com/xIuT09U.png)
 
 ##### 4. Check for `wallet.dat`
-First, shut down your node. Then, Navigate to your wallet's data directory and ensure that a `wallets.dat` file has been created. under a directory with the value you supplied as `Wallet Name`. In the case of this example it is `my-descriptor-wallet`. You should see something like this:
+First, shut down your node. Then, navigate to your wallet's data directory and ensure that a `wallets.dat` file has been created under a directory with the value you supplied as `Wallet Name`. In the case of this example, it is `my-descriptor-wallet`. You should see something like this:
 
 ![wallet-dat](https://imgur.com/w9mzT7q.png)
 
@@ -87,7 +87,7 @@ Current nodes are limited to relaying addresses that fit into 128 bits. This lim
 
 **Why do we want to add compatibility for Tor v3 addresses?**
 
-Tor v2 addresses contain various vulnerabilities that expose a node to a variety of [attacks](https://github.com/Attacks-on-Tor/Attacks-on-Tor). V2 addresses are also over a decade old, they are scheduled to be [retired](https://blog.torproject.org/v2-deprecation-timeline) by October 15, 2021. [Tor Onion v3](https://www.jamieweb.net/blog/onionv3-hidden-service/) addresses use a stronger encryption format that fixes some of v2's weaknesses.
+Tor v2 addresses contain various vulnerabilities that expose a node to a variety of [attacks](https://github.com/Attacks-on-Tor/Attacks-on-Tor). V2 addresses are also over a decade old, and they are scheduled to be [retired](https://blog.torproject.org/v2-deprecation-timeline) by October 15, 2021. [Tor Onion v3](https://www.jamieweb.net/blog/onionv3-hidden-service/) addresses use a stronger encryption format that fixes some of v2's weaknesses.
 
 **What else do I need to know about this change?**
 
@@ -117,7 +117,7 @@ $ tor
 ```
 
 ### 2. Manual Testing
-For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some linux distros if there is a Tor daemon running on the machine `bitcoind` will pick it up and authenticate with a cookie file.
+For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some linux distros, if there is a Tor daemon running on the machine, `bitcoind` will pick it up and authenticate with a cookie file.
 
 #### Listen on TorV3
 We are going to setup our node to [listen on Tor automatically](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md#3-automatically-listen-on-tor). This means that the node is going to look for other peers on the Tor network.
@@ -129,7 +129,7 @@ The `bitcoin.conf` file is used to [configure](https://en.bitcoin.it/wiki/Runnin
 touch bitcoin.conf
 ```
 ##### 2. Edit bitcoin.conf
-We will be adding settings to the bitcoin.conf that will allow us to connect and find peers through the Tor network. Since the Bitcoin Core 0.21 release has not been actually been released yet, `Torv3` nodes are rare to come across. Because of this, we are going to manually add a `Torv3` node that has been tracked down. Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
+We will be adding settings to the bitcoin.conf that will allow us to connect and find peers through the Tor network. Since the Bitcoin Core 0.21 release has not actually been released yet, `Torv3` nodes are rare to come across. Because of this, we are going to manually add a `Torv3` node that has been tracked down. Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
 
 ```
 proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.
@@ -149,12 +149,12 @@ Launch `bitcoin-qt` and provide the data directory we have been using:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=./my-wallet
+./src/qt/bitcoin-qt --datadir=./21-rc-test
 ```
 
 ###### Binary
 ``` bash
-./bin/bitcoin-qt --datadir=./my-wallet
+./bin/bitcoin-qt --datadir=./21-rc-test
 ```
 
 ##### 4. Check for Tor peers
@@ -175,20 +175,20 @@ The Bitcoin [testnet](https://en.bitcoin.it/wiki/Testnet) is a proof-of-work bas
 This release introduces [Signet](https://bitcoinops.org/en/topics/signet/), a new testing network. Signet does away with decentralized proof-of-work in favor of a centralized consensus mechanism where a group with authority is in charge of creating new blocks based on valid signatures. The aim is to create a testing network that is predictable and reliable.
 
 ## 1. Manual Testing
-The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page) contains excellent documentation on connecting to and testing Signet. Follow this [guide](https://en.bitcoin.it/wiki/Signet) to test Signet.
+The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Signet) contains excellent documentation on connecting to and testing Signet.
 
 ---
 
 ## Testing Anchors
 An [eclipse attack](https://cs-people.bu.edu/heilman/eclipse/) is an attack on bitcoin's p2p network. In order for the attack to be effective, the attacker aims to restart your node and then supply your node with IP addresses controlled by the attacker. Eclipse attacks reduce the soundness of second layer solutions such as the lightning network.
 
-When you're node connects to the Bitcoin network, it makes at least [two outbound block-relay-only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the [two outbound block-relay connections]() your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce an eclipse attack from being successful.
+When you're node connects to the Bitcoin network, it makes [two outbound block-relay-only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the two outbound block-relay connections] your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce an eclipse attack from being successful.
 
 ### 1. Manual Testing
 When a node shuts down cleanly, then an `anchors.dat` file should appear in the node's data directory. We want to check that this file is created upon node shut-down, and deleted on node start-up.
 
 #### 1. Clean up data directory
-We want to delete the `bitcoin.conf` in our data directory as we no longer need to connect through tor. You're free to leave this in if you like. In the data directory do:
+We want to delete the `bitcoin.conf` in our data directory as we no longer need to connect through Tor. You're free to leave this in if you like. In the data directory do:
 ``` bash
 rm ./bitcoin.conf
 ```
@@ -211,7 +211,7 @@ At the peer information page, visually check that you are connected to peers.
 Shut down your node by navigating and clicking on File->Exit.
 ![shut-down](https://imgur.com/GSgvHhc.png)
 
-#### 6. Check for an `anchors.dat` File
+#### 6. Check for an `anchors.dat` file
 Navigate to the data directory for your node.
 ![check-anchorsdat](https://imgur.com/AOCnuZ4.png)
 
