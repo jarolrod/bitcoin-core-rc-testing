@@ -288,7 +288,14 @@ Restart your node, then navigate to your data directory. The image below is the 
 
 ## Clean-up and thank yous
 
-Thank you for your help in making Bitcoin as robust as it can be.
+Thank you for your help in making Bitcoin as robust as it can be. Please remember to add a comment on [v0.21.0 testing issue detailing](https://github.com/bitcoin/bitcoin/issues/20555):
+
+1. Your hardware and operating system
+1. Which release candidate you tested and whether you compiled from source or used a binary (e.g. 0.21rc2 binary or 0.21rc3 compiled from source)
+1. What you tested (e.g., created a descriptor wallet, connected over Torv3, ran through the anchors test)
+1. Any other relevant findings
+
+**Don't be shy about leaving a comment even if everything worked great!** We want to hear from you and so it doesn't count unless you leave some feedback. Plus, you'll be Bitcoin GitHub famous!
 
 Use this command to remove all the data you played around with:
 
