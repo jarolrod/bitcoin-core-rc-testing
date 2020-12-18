@@ -4,7 +4,7 @@ This document outlines some of the upcoming Bitcoin Core 0.21 release changes an
 
 ## Introduction
 
-The release candidate for version 0.21 was just tagged and is ready for testing. And, oh boy, is 0.21 the right time for you to get involved as a tester. It’s jam-packed with changes that need to be run on your operating system with your hardware. Database changes? Welcome [SQLite](https://github.com/bitcoin/bitcoin/pull/19077). A new network to test on? Hello, [signet](https://github.com/bitcoin/bitcoin/pull/18267). Have you heard that Tor v2 is being deprecated? The upgrade to [Tor v3](http://github.com/bitcoin/bitcoin/pull/19954) is in 0.21. What about the wallet? [Total re-write](https://achow101.com/2020/10/0.21-wallets).
+The release candidate for version 0.21 was just tagged and is ready for testing. And, oh boy, is 0.21 the right time for you to get involved as a tester. It’s jam-packed with changes that need to be run on your operating system with your hardware. Database changes? Welcome [SQLite](https://github.com/bitcoin/bitcoin/pull/19077). A new network to test on? Hello, [Signet](https://github.com/bitcoin/bitcoin/pull/18267). Have you heard that Tor v2 is being deprecated? The upgrade to [Tor v3](http://github.com/bitcoin/bitcoin/pull/19954) is in 0.21. What about the wallet? [Total re-write](https://achow101.com/2020/10/0.21-wallets).
 
 You can get involved by running through this guide and checking that everything works as it should on your machine. Please report back your findings [here](https://github.com/bitcoin/bitcoin/issues/20555). If everything went smoothly, let us know. If everything broke, definitely let us know!
 
@@ -35,7 +35,7 @@ We will be creating and supplying a new data directory for our node to run from.
 mkdir 21-rc-test
 ```
 
-This will ensure you aren't using any new data and that you an easily access it. We'll nuke it when this is all over.
+This will ensure you aren't using any old data and that you an easily access it. We'll nuke it when this is all over.
 
 ---
 
@@ -49,7 +49,7 @@ The current wallet was designed when what Bitcoin could be used for was not yet 
 
 **Why the Switch to SQLite?**
 
-`BerkelyDB 4.8` is 10 years old. This database is not actively maintained, not meant to be used as an application database, and is susceptible to file corruptions. Since the move to descriptor wallets introducing breaking compatibility changes, SQLite was chosen as a new database because it provides certain guarantees necessary for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkelyDB 4.8`, SQLite allows us to have one file wallet instead of a wallet directory. This helps with wallet portability.
+`BerkeleyDB 4.8` is 10 years old. This database is not actively maintained, not meant to be used as an application database, and is susceptible to file corruptions. Since the move to descriptor wallets introducing breaking compatibility changes, SQLite was chosen as a new database because it provides certain guarantees necessary for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkeleyDB 4.8`, SQLite allows us to have one file wallet instead of a wallet directory. This helps with wallet portability.
 
 ### 1. Preparation
 
@@ -71,7 +71,7 @@ We will now run `bitcoin-qt` and provide a data directory:
 ./src/qt/bitcoin-qt --datadir=./21-rc-test
 ```
 
-###### Binary
+###### Binary Build
 
 ``` bash
 ./bin/bitcoin-qt --datadir=./21-rc-test
@@ -128,7 +128,7 @@ See that last line?!? Descriptors true! :dancer:
 
 OK. You'll need two terminal windows.
 
-In the first, you'll need to start you node:
+In the first, you'll need to start your node:
 ```
 ./src/bitcoind --datadir=./21-rc-test
 ```
@@ -139,7 +139,7 @@ And in the other, you can create your wallet:
 ./src/bitcoin-cli --datadir=./21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
 ```
 
-While the logs fly by in that bitcoind window, once you've created a wallet you should see something like:
+While the logs fly by in that `bitcoind` window, once you've created a wallet you should see something like:
 
 ```
 {
