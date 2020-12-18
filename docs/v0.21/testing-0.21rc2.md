@@ -26,16 +26,16 @@ macOS users will need to either [compile from source](https://github.com/bitcoin
 
 **If you grabbed a binary, skip this step.**
 
-Before compiling, make sure that your system has all the right dependencies installed. As this guide utilizes the Bitcoin Core GUI, you must compile support for the GUI and have the `qt5` dependency already installed. To test the new wallet changes, make sure that you installed the `sqlite3` dependency. Here are some guides to compile Bitcoin Core from source for [OSX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [Windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md), and [UNIX](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md).
+Before compiling, make sure that your system has all the right dependencies installed. As this guide utilizes the Bitcoin Core GUI, you must compile support for the GUI and have the `qt5` dependency already installed. To test the new wallet changes, make sure that you installed the `sqlite3` dependency. Here are some guides to compile Bitcoin Core from source for [UNIX/Linux](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md), [macOS](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md), [Windows](https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md), [FreeBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-freebsd.md), [NetBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-netbsd.md), and [OpenBSD](https://github.com/bitcoin/bitcoin/blob/master/doc/build-openbsd.md).
 
 #### 3. Create a new data directory
-We will be creating and supplying a new data directory for our node to run from. Starting from the root of your Bitcoin release candidate directory, run:
+We will be creating and supplying a new data directory for our node to run from. Starting from the root of your Bitcoin release candidate directory, make yourself the new testing data directory with:
 
 ``` bash
 mkdir /tmp/21-rc-test
 ```
 
-This will ensure you aren't using any old data and that you an easily access it. We'll nuke it when this is all over.
+This will ensure you aren't using any old data and that you can easily access it. We'll nuke it when this is all over.
 
 ---
 
@@ -51,6 +51,10 @@ The current wallet was designed when what Bitcoin could be used for was not yet 
 
 `BerkeleyDB 4.8` is 10 years old. This database is not actively maintained, not meant to be used as an application database, and is susceptible to file corruptions. Since the move to descriptor wallets introducing breaking compatibility changes, SQLite was chosen as a new database because it provides certain guarantees necessary for ensuring that the wallet remains backwards compatible moving forward. Furthermore, unlike `BerkeleyDB 4.8`, SQLite allows us to have one file wallet instead of a wallet directory. This helps with wallet portability.
 
+### For more info on descritor wallets
+
+AChow101 (the guy that wrote most of the code you are about to test) [wrote up some details about descriptor wallets](https://achow101.com/2020/10/0.21-wallets#descriptor-wallets) if you want to learn more.
+
 ### 1. Preparation
 
 If you grabbed the binary for this release candidate, you're good to go. If you went down the source route, it is required that you installed the `sqlite3` dependency and compiled the source code with wallet functionality. Skip this section if you intentionally do not want wallet functionality or don't want to test it.
@@ -59,7 +63,7 @@ If you grabbed the binary for this release candidate, you're good to go. If you 
 
 #### Using the GUI
 
-Skip to section below if you'd prefer to use the command line.
+**Skip to section below if you'd prefer to use the command line.**
 
 ##### Run node, provide data directory
 
@@ -87,7 +91,7 @@ Upon start, a node no longer creates a wallet by default. We will need to create
 
 ###### Create New Wallet
 
-Clicking on "Create a new Wallet" will bring you to the following screen. Give your wallet a name and make sure to have `Descriptor Wallet` enabled under `Advanced Options`. Congratulations, You've created your first descriptor wallet!
+Clicking on "Create a new Wallet" will bring you to the following screen. Give your wallet a name and make sure to have `Descriptor Wallet` enabled under `Advanced Options`. Hit `Create`. Congratulations, you've created your first descriptor wallet!
 
 ![descriptor](https://imgur.com/xIuT09U.png)
 
@@ -175,11 +179,7 @@ Which should result in something like:
 }
 ```
 
-If you see `"descriptors": true` in that last line, you are :money_with_wings:.
-
-### For more info on descritor wallets
-
-AChow101 (the guy that wrote most of the code you just tested) [wrote up some details about descriptor wallets](https://achow101.com/2020/10/0.21-wallets#descriptor-wallets) if you want to learn more. Welcome to the future!
+If you see `"descriptors": true` in that last line, you are :money_with_wings:. Welcome to the future!
 
 ---
 
