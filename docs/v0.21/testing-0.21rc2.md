@@ -57,6 +57,10 @@ If you grabbed the binary for this release candidate, you're good to go. If you 
 
 ### Manual Testing
 
+#### Using the GUI
+
+Skip to section below if you'd prefer to use the command line.
+
 ##### Run node, provide data directory
 
 We will now run `bitcoin-qt` and provide a data directory:
@@ -92,6 +96,88 @@ Clicking on "Create a new Wallet" will bring you to the following screen. Give y
 First, shut down your node using File->Quit. Then, navigate to your wallet's data directory and ensure that a `wallets.dat` file has been created under a directory with the value you supplied as `Wallet Name`. In the case of this example, it is `my-descriptor-wallet`. You should see something like this:
 
 ![wallet-dat](https://imgur.com/w9mzT7q.png)
+
+##### 5. (extra credit) Check that wallet is a descriptor wallet
+
+Navigate to Window->Console. A console will pop up and in the text box enter `getwalletinfo`.
+
+You should see something like:
+
+```￼
+{
+  "walletname": "my-descriptor-wallet",
+  "walletversion": 169900,
+  "format": "sqlite",
+  "balance": 0.00000000,
+  "unconfirmed_balance": 0.00000000,
+  "immature_balance": 0.00000000,
+  "txcount": 0,
+  "keypoolsize": 3000,
+  "keypoolsize_hd_internal": 3000,
+  "paytxfee": 0.00000000,
+  "private_keys_enabled": true,
+  "avoid_reuse": false,
+  "scanning": false,
+  "descriptors": true
+}
+```
+
+See that last line?!? Descriptors true! :dancer:
+
+### Using the command line
+
+OK. You'll need two terminal windows.
+
+In the first, you'll need to start you node:
+```
+./src/bitcoind --datadir=./21-rc-test
+```
+
+And in the other, you can create your wallet:
+
+```
+./src/bitcoin-cli --datadir=./21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
+```
+
+While the logs fly by in that bitcoind window, once you've created a wallet you should see something like:
+
+```
+{
+  "name": "my-descriptor-wallet",
+  "warning": "Wallet is an experimental descriptor wallet"
+}
+```
+
+Now let's check it's what we want. In that wallet window add:
+
+```
+./src/bitcoin-cli --datadir=./21-rc-test getwalletinfo
+```
+
+Which should result in something like:
+
+```￼
+{
+  "walletname": "my-descriptor-wallet",
+  "walletversion": 169900,
+  "format": "sqlite",
+  "balance": 0.00000000,
+  "unconfirmed_balance": 0.00000000,
+  "immature_balance": 0.00000000,
+  "txcount": 0,
+  "keypoolsize": 3000,
+  "keypoolsize_hd_internal": 3000,
+  "paytxfee": 0.00000000,
+  "private_keys_enabled": true,
+  "avoid_reuse": false,
+  "scanning": false,
+  "descriptors": true
+}
+```
+
+If you see `"descriptors": true` in that last line, you are :money_with_wings:.
+
+### For more info on descritor wallets
 
 AChow101 (the guy that wrote most of the code you just tested) [wrote up some details about descriptor wallets](https://achow101.com/2020/10/0.21-wallets#descriptor-wallets) if you want to learn more. Welcome to the future!
 
