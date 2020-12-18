@@ -326,7 +326,7 @@ This release introduces [Signet](https://bitcoinops.org/en/topics/signet/), a ne
 
 ### Manual Testing
 
-The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Signet) contains excellent documentation on connecting to and testing Signet.
+The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Signet) contains excellent documentation on connecting to and testing Signet. Building a custom signet is pretty involved but jumping on the default global signet should be just as fun. Give it a whirl!
 
 ---
 
