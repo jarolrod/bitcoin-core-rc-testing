@@ -2,7 +2,7 @@
 
 This document outlines some of the upcoming Bitcoin Core 0.21 release changes and provides steps on how to test these changes.
 
-## Introduction
+## Why We Need You
 
 The release candidate for version 0.21 was just tagged and is ready for testing. And, oh boy, is 0.21 the right time for you to get involved as a tester. It’s jam-packed with changes that need to be run on your operating system with your hardware. Database changes? Welcome [SQLite](https://github.com/bitcoin/bitcoin/pull/19077). A new network to test on? Hello, [Signet](https://github.com/bitcoin/bitcoin/pull/18267). Have you heard that Tor v2 is being deprecated? The upgrade to [Tor v3](http://github.com/bitcoin/bitcoin/pull/19954) is in 0.21. What about the wallet? [Total re-write](https://achow101.com/2020/10/0.21-wallets).
 
@@ -32,7 +32,7 @@ Before compiling, make sure that your system has all the right dependencies inst
 We will be creating and supplying a new data directory for our node to run from. Starting from the root of your Bitcoin release candidate directory, run:
 
 ``` bash
-mkdir 21-rc-test
+mkdir /tmp/21-rc-test
 ```
 
 This will ensure you aren't using any old data and that you an easily access it. We'll nuke it when this is all over.
@@ -68,13 +68,13 @@ We will now run `bitcoin-qt` and provide a data directory:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=./21-rc-test
+./src/qt/bitcoin-qt --datadir=./tmp/21-rc-test
 ```
 
 ###### Binary Build
 
 ``` bash
-./bin/bitcoin-qt --datadir=./21-rc-test
+./bin/bitcoin-qt --datadir=./tmp/21-rc-test
 ```
 
 ##### Create new Descriptor Wallet
@@ -130,13 +130,13 @@ OK. You'll need two terminal windows.
 
 In the first, you'll need to start your node:
 ```
-./src/bitcoind --datadir=./21-rc-test
+./src/bitcoind --datadir=./tmp/21-rc-test
 ```
 
 And in the other, you can create your wallet:
 
 ```
-./src/bitcoin-cli --datadir=./21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
+./src/bitcoin-cli --datadir=./tmp/21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
 ```
 
 While the logs fly by in that `bitcoind` window, once you've created a wallet you should see something like:
@@ -151,7 +151,7 @@ While the logs fly by in that `bitcoind` window, once you've created a wallet yo
 Now let's check it's what we want. In that wallet window add:
 
 ```
-./src/bitcoin-cli --datadir=./21-rc-test getwalletinfo
+./src/bitcoin-cli --datadir=./tmp/21-rc-test getwalletinfo
 ```
 
 Which should result in something like:
@@ -231,7 +231,7 @@ We are going to setup our node to [listen on Tor automatically](https://github.c
 The `bitcoin.conf` file is used to [configure](https://en.bitcoin.it/wiki/Running_Bitcoin#Bitcoin.conf_Configuration_File) how your node will run. This file is not automatically created and must be created manually. This file will be created in the data directory that we previously created while testing the wallet. From your data directory, run:
 
 ``` bash
-touch ./21-rc-test/bitcoin.conf
+touch ./tmp/21-rc-test/bitcoin.conf
 ```
 
 We will be adding settings to the bitcoin.conf that will allow us to connect and find peers through the Tor network. Since the Bitcoin Core 0.21 release has not actually been released yet, `Torv3` nodes are rare to come across. Because of this, we are going to manually add a `Torv3` node that has been tracked down. Using your favorite text editor, add the following to the newly created `bitcoin.conf` file:
@@ -256,13 +256,13 @@ Ready to test? There are two ways to try this.
 ##### 3a. Start bitcoind
 
 ```bash
-./src/bitcoind --datadir=./21-rc-test
+./src/bitcoind --datadir=./tmp/21-rc-test
 ```
 
 You will see a flurry of messages as the logs pass by. Open a new terminal window and let's query our running node to see who we've connected to:
 
 ```bash
-./src/bitcoin-cli --datadir=./21-rc-test getpeerinfo
+./src/bitcoin-cli --datadir=./tmp/21-rc-test getpeerinfo
 ```
 
 This should show you a list of peers. This is what a first one might look like:
@@ -288,13 +288,13 @@ Launch `bitcoin-qt` and provide the data directory we have been using:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=./21-rc-test
+./src/qt/bitcoin-qt --datadir=./tmp/21-rc-test
 ```
 
 ###### Binary Build
 
 ``` bash
-./bin/bitcoin-qt --datadir=./21-rc-test
+./bin/bitcoin-qt --datadir=./tmp/21-rc-test
 ```
 
 ###### Check for Tor peers
@@ -313,7 +313,7 @@ You can differentiate a Torv3 node from a Torv2 node by looking at how long it i
 We want to delete the `bitcoin.conf` in our data directory as we no longer need these configurations.
 
 ``` bash
-rm ./21-rc-test/bitcoin.conf
+rm ./tmp/21-rc-test/bitcoin.conf
 ```
 
 ---
@@ -373,21 +373,27 @@ Navigate to the data directory for your node.
 Restart your node, then navigate to your data directory. The image below is the data directory for a Bitcoin node while it is running. Notice that the `anchors.dat` file is missing. This is the expected behavior.
 ![anchor-gone](https://imgur.com/tydZLxa.png)
 
-## Clean-up and thank yous
+## Freestyle
+
+You've reached the end of the regularly scheduled programming. Take a little time to explore some of your recent use-case and/or revisit your favorite feature of QT or `bitcoind` (if any). Just poke around and make sure everything works as expected.
+
+## Clean-up
+
+Use this command to remove all the data you played around with:
+
+```bash
+rm ./tmp/21-rc-test/
+```
+
+## The Most Important Step
 
 Thank you for your help in making Bitcoin as robust as it can be. Please remember to add a comment on [v0.21.0 testing issue detailing](https://github.com/bitcoin/bitcoin/issues/20555):
 
 1. Your hardware and operating system
 1. Which release candidate you tested and whether you compiled from source or used a binary (e.g. 0.21rc2 binary or 0.21rc3 compiled from source)
-1. What you tested (e.g., created a descriptor wallet, connected over Torv3, ran through the anchors test)
+1. What you tested (e.g., created a descriptor wallet, connected over Torv3, ran through the anchors test, your favorite features)
 1. Any other relevant findings
 
 **Don't be shy about leaving a comment even if everything worked great!** We want to hear from you and so it doesn't count unless you leave some feedback. Plus, you'll be Bitcoin GitHub famous!
-
-Use this command to remove all the data you played around with:
-
-```bash
-rm ./21-rc-test/bitcoin.conf
-```
 
 Thanks for your contribution and for taking the time to make Bitcoin awesome.
