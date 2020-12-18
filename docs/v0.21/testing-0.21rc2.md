@@ -68,13 +68,13 @@ We will now run `bitcoin-qt` and provide a data directory:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=/tmp/21-rc-test
+./src/qt/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
 ###### Binary Build
 
 ``` bash
-./bin/bitcoin-qt --datadir=/tmp/21-rc-test
+./bin/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
 ##### Create new Descriptor Wallet
@@ -126,17 +126,17 @@ See that last line?!? Descriptors true! :dancer:
 
 ### Using the command line
 
-OK. You'll need two terminal windows.
+You'll need two terminal windows. (Make sure you don't have the GUI running as you can't use it as the same time as `bitcoind`.)
 
-In the first, you'll need to start your node:
+In the first window, you'll need to start your node:
 ```
-./src/bitcoind --datadir=/tmp/21-rc-test
+./src/bitcoind -datadir=/tmp/21-rc-test
 ```
 
 And in the other, you can create your wallet:
 
 ```
-./src/bitcoin-cli --datadir=/tmp/21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
+./src/bitcoin-cli -datadir=/tmp/21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
 ```
 
 While the logs fly by in that `bitcoind` window, once you've created a wallet you should see something like:
@@ -151,7 +151,7 @@ While the logs fly by in that `bitcoind` window, once you've created a wallet yo
 Now let's check it's what we want. In that wallet window add:
 
 ```
-./src/bitcoin-cli --datadir=/tmp/21-rc-test getwalletinfo
+./src/bitcoin-cli -datadir=/tmp/21-rc-test getwalletinfo
 ```
 
 Which should result in something like:
@@ -256,13 +256,13 @@ Ready to test? There are two ways to try this.
 ##### 3a. Start bitcoind
 
 ```bash
-./src/bitcoind --datadir=/tmp/21-rc-test
+./src/bitcoind -datadir=/tmp/21-rc-test
 ```
 
 You will see a flurry of messages as the logs pass by. Open a new terminal window and let's query our running node to see who we've connected to:
 
 ```bash
-./src/bitcoin-cli --datadir=/tmp/21-rc-test getpeerinfo
+./src/bitcoin-cli -datadir=/tmp/21-rc-test getpeerinfo
 ```
 
 This should show you a list of peers. This is what a first one might look like:
@@ -288,13 +288,13 @@ Launch `bitcoin-qt` and provide the data directory we have been using:
 ###### Source code
 
 ``` bash
-./src/qt/bitcoin-qt --datadir=/tmp/21-rc-test
+./src/qt/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
 ###### Binary Build
 
 ``` bash
-./bin/bitcoin-qt --datadir=/tmp/21-rc-test
+./bin/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
 ###### Check for Tor peers
@@ -334,7 +334,7 @@ The [Bitcoin Wiki](https://en.bitcoin.it/wiki/Signet) contains excellent documen
 
 An [eclipse attack](https://cs-people.bu.edu/heilman/eclipse/) is an attack on bitcoin's p2p network. In order for the attack to be effective, the attacker aims to restart your node and then supply your node with IP addresses controlled by the attacker. Eclipse attacks reduce the soundness of second layer solutions such as the lightning network.
 
-When you're node connects to the Bitcoin network, it makes [two outbound block-relay-only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the two outbound block-relay connections] your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce an eclipse attack from being successful.
+When you're node connects to the Bitcoin network, it makes [two outbound block-relay-only connections](https://github.com/bitcoin/bitcoin/pull/15759). This release introduces [Anchor Connections](https://github.com/bitcoin/bitcoin/pull/17428). Anchors are the two outbound block-relay connections your node is connected to; logged to an `anchors.dat` file so that they can be used upon a node restart. Under the assumption that you were connected to honest nodes before the attack, this aims to reduce the chances of an eclipse attack from being successful.
 
 ### Manual Testing
 
