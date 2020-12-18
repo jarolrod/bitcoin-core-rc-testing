@@ -244,6 +244,7 @@ onlynet=onion
 
 addnode=sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd.onion:8333
 addnode=rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333
+addnode=d6jwdcoo2l3gbjps6asgg4nhp2gn5oao3wj333o43ssqnjaliehytfad.onion:8333
 ```
 
 (Cutting and pasting the text above should do the trick, but you can see the [example bitcoin.conf](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf) file for an overview of the available options.
@@ -278,7 +279,7 @@ This should show you a list of peers. This is what a first one might look like:
 ]
 ```
 
-If you have `rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread` or `sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd` in the response, you've successfully connected to a Tor v3 node! :tada:
+If you have `rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread`, `sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd`, or `d6jwdcoo2l3gbjps6asgg4nhp2gn5oao3wj333o43ssqnjaliehytfad` in the response, you've successfully connected to a Tor v3 node! :tada:
 
 ##### 3b. Launch bitcoin-qt
 
