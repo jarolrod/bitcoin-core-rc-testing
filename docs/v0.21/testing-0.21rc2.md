@@ -103,7 +103,7 @@ First, shut down your node using File->Quit. Then, navigate to your wallet's dat
 
 ##### 5. (extra credit) Check that wallet is a descriptor wallet
 
-Navigate to Window->Console. A console will pop up and in the text box enter `getwalletinfo`.
+Reopen `bitcoin-qt`, then navigate to Window->Console. A console will pop up and in the text box enter `getwalletinfo`.
 
 You should see something like:
 
@@ -155,7 +155,7 @@ While the logs fly by in that `bitcoind` window, once you've created a wallet yo
 Now let's check it's what we want. In that wallet window add:
 
 ```
-./src/bitcoin-cli -datadir=/tmp/21-rc-test getwalletinfo
+./src/bitcoin-cli -datadir=/tmp/21-rc-test -rpcwallet=my-descriptor-wallet getwalletinfo
 ```
 
 Which should result in something like:
