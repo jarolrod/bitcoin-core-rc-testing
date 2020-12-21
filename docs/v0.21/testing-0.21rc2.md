@@ -394,6 +394,6 @@ Thank you for your help in making Bitcoin as robust as it can be. Please remembe
 1. What you tested (e.g., created a descriptor wallet, connected over Torv3, ran through the anchors test, your favorite features)
 1. Any other relevant findings
 
-**Don't be shy about leaving a comment even if everything worked great!** We want to hear from you and so it doesn't count unless you leave some feedback. Plus, you'll be Bitcoin GitHub famous!
+**Don't be shy about leaving a comment even if everything worked as expected!** We want to hear from you and so it doesn't count unless you leave some feedback.
 
 Thanks for your contribution and for taking the time to make Bitcoin awesome.
