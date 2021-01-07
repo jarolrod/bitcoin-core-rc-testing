@@ -12,15 +12,12 @@ You can get involved by running through this guide and checking that everything 
 
 #### 1. Grab Latest Release Candidate
 
-**Current Release Candidate:** [Bitcoin Core 0.21rc3](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3) [(changelog)](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft)
+**Current Release Candidate:** [Bitcoin Core 0.21rc5](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc5) [(changelog)](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/0.21.0-Release-Notes-Draft)
 
 There are two ways to grab the latest release candidate: pre-compiled binary or source code.
-The source code for the latest release can be grabbed from here: [latest release source code](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3).
+The source code for the latest release can be grabbed from here: [latest release source code](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc5).
 
-If you want to use a binary, make sure to grab the correct one for your system. There are individual binaries for [Linux](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-x86_64-linux-gnu.tar.gz), [Arm (64 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-aarch64-linux-gnu.tar.gz), [Arm (32 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-arm-linux-gnueabihf.tar.gz), and [RISC-V](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc3/bitcoin-0.21.0rc3-riscv64-linux-gnu.tar.gz).
-
-***NOTE FOR MACOSX USERS:***  
-macOS users will need to either [compile from source](https://github.com/bitcoin/bitcoin/releases/tag/v0.21.0rc3) or use the [rc2 binary](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc2/bitcoin-0.21.0rc2-osx.dmg) until [Apple's code signing issue](https://github.com/bitcoin/bitcoin/pull/20638) can be figured out.
+If you want to use a binary, make sure to grab the correct one for your system. There are individual binaries for [macOS](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc5/bitcoin-0.21.0rc5-osx64.tar.gz), [Linux](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc5/bitcoin-0.21.0rc5-x86_64-linux-gnu.tar.gz), [Arm (64 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc5/bitcoin-0.21.0rc5-aarch64-linux-gnu.tar.gz), [Arm (32 bit)](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc5/bitcoin-0.21.0rc5-arm-linux-gnueabihf.tar.gz), and [RISC-V](https://bitcoincore.org/bin/bitcoin-core-0.21.0/test.rc5/bitcoin-0.21.0rc5-riscv64-linux-gnu.tar.gz).
 
 #### 2. Compile Release Candidate
 
@@ -71,13 +68,13 @@ We will now run `bitcoin-qt` and provide a data directory:
 
 ###### Source code
 
-``` bash
+```bash
 ./src/qt/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
 ###### Binary Build
 
-``` bash
+```bash
 ./bin/bitcoin-qt -datadir=/tmp/21-rc-test
 ```
 
@@ -107,7 +104,7 @@ Reopen `bitcoin-qt`, then navigate to Window->Console. A console will pop up and
 
 You should see something like:
 
-```￼
+```￼json
 {
   "walletname": "my-descriptor-wallet",
   "walletversion": 169900,
@@ -133,19 +130,36 @@ See that last line?!? Descriptors true! :dancer:
 You'll need two terminal windows. (Make sure you don't have the GUI running as you can't use it as the same time as `bitcoind`.)
 
 In the first window, you'll need to start your node:
-```
+
+###### Source Code
+
+```bash
 ./src/bitcoind -datadir=/tmp/21-rc-test
+```
+
+###### Binary Build
+
+```bash
+./bin/bitcoind -datadir=/tmp/21-rc-test
 ```
 
 And in the other, you can create your wallet:
 
-```
+###### Source Code
+
+```bash
 ./src/bitcoin-cli -datadir=/tmp/21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
+```
+
+###### Binary Build
+
+```bash
+./bin/bitcoin-cli -datadir=/tmp/21-rc-test -named createwallet wallet_name="my-descriptor-wallet" descriptors=true
 ```
 
 While the logs fly by in that `bitcoind` window, once you've created a wallet you should see something like:
 
-```
+```json
 {
   "name": "my-descriptor-wallet",
   "warning": "Wallet is an experimental descriptor wallet"
@@ -154,13 +168,21 @@ While the logs fly by in that `bitcoind` window, once you've created a wallet yo
 
 Now let's check it's what we want. In that wallet window add:
 
-```
+###### Source Code
+
+```bash
 ./src/bitcoin-cli -datadir=/tmp/21-rc-test -rpcwallet=my-descriptor-wallet getwalletinfo
+```
+
+###### Binary Build
+
+```bash
+./bin/bitcoin-cli -datadir=/tmp/21-rc-test -rpcwallet=my-descriptor-wallet getwalletinfo
 ```
 
 Which should result in something like:
 
-```￼
+```￼json
 {
   "walletname": "my-descriptor-wallet",
   "walletversion": 169900,
@@ -220,7 +242,6 @@ And then, to get Tor running:
 tor
 ```
 
-#### TODO: tor install instructions for linux/windows
 
 For those wanting to dig deeper, [Bitcoin Core provides documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md) on how to test running a node on Tor. There is little manual config to be done. In fact, on some Linux distros, if there is a Tor daemon running on the machine, `bitcoind` will pick it up and authenticate with a cookie file.
 
@@ -255,31 +276,59 @@ Ready to test? There are two ways to try this.
 
 ##### 3a. Start bitcoind
 
+###### Source Code
+
 ```bash
 ./src/bitcoind -datadir=/tmp/21-rc-test
 ```
 
+###### Binary Build
+
+```bash
+./bin/bitcoind -datadir=/tmp/21-rc-test
+```
+
 You will see a flurry of messages as the logs pass by. Open a new terminal window and let's query our running node to see who we've connected to:
 
-```bash
-./src/bitcoin-cli -datadir=/tmp/21-rc-test getpeerinfo
-```
-
-This should show you a list of peers. This is what a first one might look like:
+###### Source Code
 
 ```bash
-[
-  {
-    "id": 0,
-    "addr": "rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333",
-    ...
-    "network": "onion",
-    ...
-  }
-]
+./src/bitcoin-cli -datadir=/tmp/21-rc-test -netinfo 4
 ```
 
-If you have `rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread`, `sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd`, or `d6jwdcoo2l3gbjps6asgg4nhp2gn5oao3wj333o43ssqnjaliehytfad` in the response, you've successfully connected to a Tor v3 node! :tada:
+###### Binary Build
+
+```bash
+./bin/bitcoin-cli -datadir=/tmp/21-rc-test -netinfo 4
+```
+
+This should show you a list of peers. This is what your `netinfo` dashboard might look like:
+
+```
+Peer connections sorted by direction and min ping
+<-> relay   net  mping   ping send recv  txn  blk  age id address                                                             version
+out  full onion    452    452    0    0         0    0  2 rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread.onion:8333 70016/Satoshi:21.99.0(Medea)/
+out  full onion    792    792    0    0         0    1  0 sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd.onion:8333 70016/Satoshi:0.21.0/
+out  full onion    795    795    0    0         0    0  9 knymm3arciehs6d7.onion:8333                                         70015/Satoshi:0.20.0/
+out  full onion    987    987    0    0         0    0  4 paot7erqftbiyb5o.onion:8333                                         70015/Satoshi:0.18.1/
+out  full onion   1090   1090    0    0         0    1  1 js5qbirosykw42jg.onion:8333                                         70015/Satoshi:0.20.1/
+out  full onion   1361   1361   20   17              0  6 4le6zxbxgstmk2w7.onion:8333                                         70015/Satoshi:0.20.1/
+out  full onion   1834   1834    1    1         0    0  7 thcyj2dhddre45z6.onion:8333                                         70015/Satoshi:0.20.0/
+out  full onion   5230   5230    4    0              0  8 bvkbr4qudict4pv7.onion:8333                                         70015/Satoshi:0.20.0/
+                    ms     ms  sec  sec  min  min  min
+
+        ipv4    ipv6   onion   total  block-relay
+in         0       0       0       0       0
+out        0       0       8       8       0
+total      0       0       8       8       0
+
+Local addresses: n/a
+
+```
+
+If you have `rp7k2go3s5lyj3fnj6zn62ktarlrsft2ohlsxkyd7v3e3idqyptvread`, `sxjbhmhob2xasx3vdsy5ke5j5jwecmh3ca4wbs7wf6sg4g2lm3mbszqd`, or `d6jwdcoo2l3gbjps6asgg4nhp2gn5oao3wj333o43ssqnjaliehytfad` in the response,
+you've successfully connected to a Tor v3 node! :tada:
+
 
 ##### 3b. Launch bitcoin-qt
 
@@ -344,8 +393,16 @@ When a node shuts down cleanly, then an `anchors.dat` file should appear in the 
 
 Start your node however you do so. If the release candidate is integrated into your desktop environment or is packaged into a `.dmg` in the case of macOS, launch `bitcoin-qt` from your application launcher. Otherwise, starting from the root directory of your binary or source download, run:
 
-``` bash
+###### Source Code
+
+```bash
 ./src/qt/bitcoin-qt
+```
+
+###### Binary Build
+
+```bash
+./bin/bitcoin-qt
 ```
 
 #### Navigate to Peers Window
